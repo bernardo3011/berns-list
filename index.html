@@ -4,193 +4,462 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Bern's List</title>
-<meta name="theme-color" content="#1b1713">
+<meta name="description" content="Bern's Miami: every restaurant, bar, coffee spot and hangout I've been to, on one map.">
+<meta property="og:title" content="Bern's List">
+<meta property="og:description" content="Miami, my way. Every pin is a night I remember.">
+<meta property="og:image" content="https://bernardo3011.github.io/berns-list/h001.jpg">
+<meta name="theme-color" content="#0a0f24">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌴</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Jost:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
+/* Layout: a 400-ft drone descent over Biscayne Bay (scroll-scrubbed), then a chaptered neighborhood tour with a sticky map, then the full working map, plus a neon spin wheel. Miami Art Deco at night. */
 :root{
-  --bg:#1b1713; --panel:rgba(36,30,24,.94); --panel2:#2a231c; --line:rgba(239,226,206,.10);
-  --text:#efe4d3; --muted:#a8998a;
-  --Restaurant:#c46a3e; --Bar:#8c8f4e; --Coffee:#c79a46; --Spot:#6f968a;
-  --accent:#d0a874; --accent-ink:#1b1713;
+  --night:#0a0f24;      /* Ocean Drive after dark */
+  --night2:#121a3b;
+  --panel:rgba(14,20,46,.95);
+  --panel2:#18214a;
+  --line:rgba(244,234,216,.12);
+  --sand:#f4ead8;       /* deco stucco */
+  --muted:#a6a9c8;
+  --flamingo:#ff7fb0;   /* neon pink */
+  --mint:#7ef2cf;       /* neon mint */
+  --sun:#ffcd73;        /* marquee bulb */
+  --violet:#b39cff;
+  --Restaurant:var(--flamingo); --Bar:var(--violet); --Coffee:var(--sun); --Spot:var(--mint);
+  --accent:var(--flamingo); --accent-ink:#1a0b16;
+  --f-display:"Limelight","Didot","Bodoni 72",Georgia,serif;
+  --f-body:"Jost","Futura","Avenir Next",system-ui,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,monospace;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--sand);font-family:var(--f-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%}
 button,input,select,textarea{font-family:inherit;color:inherit}
-#app{display:flex;height:100%}
-#map{flex:1;height:100%;background:var(--bg)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+a{color:inherit}
+.mono{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+.deco{font-family:var(--f-display);letter-spacing:.02em;line-height:.95}
+.neon{color:var(--flamingo);text-shadow:0 0 18px rgba(255,127,176,.55),0 0 2px rgba(255,255,255,.4)}
+.neon.m{color:var(--mint);text-shadow:0 0 18px rgba(126,242,207,.5),0 0 2px rgba(255,255,255,.4)}
+
+/* top bar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--night)}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding-left:var(--gl);padding-right:var(--gr);padding-block:12px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.mark{font-family:var(--f-display);font-size:20px;text-decoration:none;padding:5px 14px;border-radius:99px;background:rgba(10,15,36,.6);backdrop-filter:blur(10px);border:1px solid var(--line)}
+.mark i{font-style:normal;color:var(--flamingo)}
+.bar nav{display:flex;gap:6px}
+.bar nav a,.bar nav button{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:8px 13px;border:1px solid var(--line);border-radius:99px;background:rgba(10,15,36,.6);backdrop-filter:blur(10px);cursor:pointer}
+.bar nav .spin{background:var(--flamingo);color:var(--accent-ink);border-color:var(--flamingo);font-weight:500}
+@media (max-width:640px){.bar nav .hide-s{display:none}}
+
+/* hero */
+.hero{position:relative;height:420vh;background:#000}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(10,15,36,.7),transparent 28%,transparent 55%,rgba(10,15,36,.92)),radial-gradient(120% 90% at 50% 50%,transparent 50%,rgba(0,0,0,.55))}
+.hud{position:absolute;inset:0;pointer-events:none;padding-left:var(--gl);padding-right:var(--gr)}
+.hud .tl{position:absolute;left:var(--gl);top:calc(72px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:6px;color:var(--muted)}
+.hud .tl b{color:var(--mint);font-weight:400;font-variant-numeric:tabular-nums}
+.hud .tr{position:absolute;right:var(--gr);top:calc(72px + env(safe-area-inset-top,0px));text-align:right;color:var(--muted)}
+.ticks{position:absolute;right:var(--gr);top:30%;bottom:30%;width:44px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;color:var(--muted)}
+.ticks i{display:block;height:1px;width:14px;background:var(--line)}
+.ticks i:nth-child(5n+1){width:26px;background:rgba(244,234,216,.4)}
+.ticks .cur{position:absolute;right:30px;width:auto;height:auto;background:none;color:var(--flamingo);font-style:normal;transform:translateY(-50%);font-family:var(--f-mono);font-size:11px;white-space:nowrap}
+.beat{position:absolute;left:var(--gl);right:var(--gr);bottom:clamp(70px,12vh,120px);max-width:1200px;margin:0 auto;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.beat.off{opacity:0;transform:translateY(22px)}
+.beat .mono{color:var(--mint);display:block;margin-bottom:14px}
+.title{font-size:clamp(64px,14vw,210px)}
+.title span{color:var(--flamingo)}
+.lede{margin-top:16px;max-width:46ch;font-size:clamp(16px,1.6vw,19px);color:#dcd8e8}
+.line2{font-size:clamp(42px,7.6vw,112px);max-width:15ch}
+.line3{font-size:clamp(44px,8vw,120px);max-width:16ch}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;pointer-events:auto}
+.btnx{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:13px 18px;border-radius:99px;border:1px solid rgba(244,234,216,.5);background:rgba(10,15,36,.55);cursor:pointer;color:var(--sand)}
+.btnx.pink{background:var(--flamingo);border-color:var(--flamingo);color:var(--accent-ink);font-weight:500}
+.btnx.mint{background:var(--mint);border-color:var(--mint);color:#062019;font-weight:500}
+.btnx:hover{transform:translateY(-1px)}
+.cue{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));color:var(--muted);transition:opacity .4s}
+
+/* deco band */
+.band{background:var(--flamingo);color:var(--accent-ink);overflow:hidden;white-space:nowrap;border-block:3px double var(--night)}
+.band div{display:inline-flex;gap:26px;padding-block:12px;animation:roll 30s linear infinite;font-family:var(--f-display);font-size:26px}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* near me */
+.near{padding-block:clamp(56px,8vw,96px)}
+.k{display:flex;align-items:center;gap:12px;color:var(--mint);margin-bottom:18px}
+.k::after{content:"";flex:1;height:1px;background:var(--line)}
+.h2{font-size:clamp(44px,7vw,92px)}
+.near .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:18px}
+.near .head p{color:var(--muted);max-width:40ch;margin:8px 0 0}
+.closest{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:30px}
+.cl{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--night2);cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:8px;min-width:0;transition:border-color .2s,transform .2s}
+.cl:hover{border-color:var(--c);transform:translateY(-2px)}
+.cl .d{font-family:var(--f-display);font-size:40px;line-height:1;color:var(--c)}
+.cl .d small{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-left:4px}
+.cl .n{font-weight:600;font-size:16px;line-height:1.2}
+.cl .s{color:var(--muted);font-size:13px}
+.cl.ph{cursor:default;opacity:.55}
+@media (max-width:900px){.closest{grid-template-columns:repeat(2,minmax(0,1fr))}.closest>:nth-child(5){display:none}}
+
+/* tour */
+.tour{position:relative;border-top:1px solid var(--line)}
+.tour .grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:0}
+.tour .mapcol{position:sticky;top:0;height:100vh;height:100svh;order:2}
+#tourMap{position:absolute;inset:0;background:var(--night)}
+.tour .mapcol::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 80px 0 80px -40px var(--night)}
+.chapters{order:1;padding-left:var(--gl);padding-right:clamp(16px,3vw,40px)}
+.intro{min-height:70vh;display:flex;flex-direction:column;justify-content:center;padding-block:120px 40px}
+.intro p{color:var(--muted);max-width:42ch;margin-top:14px}
+.ch{min-height:92vh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-block:60px;opacity:.35;transition:opacity .4s}
+.ch.on{opacity:1}
+.ch .num{color:var(--flamingo)}
+.ch h3{font-family:var(--f-display);font-size:clamp(54px,7vw,104px);line-height:.92}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:520px}
+.specs div{background:var(--night);padding:12px 14px;min-width:0}
+.specs b{display:block;font-family:var(--f-display);font-size:28px;font-weight:400;line-height:1.1;color:var(--sand);font-variant-numeric:tabular-nums}
+.specs span{color:var(--muted)}
+.picks{display:flex;flex-direction:column;gap:8px;max-width:520px}
+.pick{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(18,26,59,.7);cursor:pointer;text-align:left;width:100%}
+.pick:hover{border-color:var(--c)}
+.pick .e{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);border:1px solid color-mix(in srgb,var(--c) 55%,transparent);flex:none}
+.pick .t{font-weight:600;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick .s{color:var(--muted);font-size:13px}
+.pick .r{margin-left:auto;color:var(--sun);font-size:13px;flex:none}
+.tdot{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--night),0 0 12px var(--c);transition:transform .3s,opacity .3s}
+.tdot.dim{opacity:.25;transform:scale(.7)}
+.tdot.hot{transform:scale(1.5)}
+@media (max-width:860px){
+  .tour .grid{grid-template-columns:1fr}
+  .tour .mapcol{order:0;height:44vh;height:44svh;top:0;z-index:2}
+  .tour .mapcol::after{box-shadow:inset 0 -60px 50px -30px var(--night)}
+  .chapters{padding-right:var(--gr)}
+  .intro{min-height:auto;padding-block:40px 20px}
+  .ch{min-height:74vh;padding-block:30px}
+}
+
+/* map app */
+#mapapp{position:relative;height:100vh;height:100svh;border-top:1px solid var(--line)}
+#app{display:flex;height:100%;position:relative}
+#map{flex:1;height:100%;background:var(--night)}
 #side{width:400px;max-width:100%;height:100%;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);z-index:500;position:relative}
-.head{padding:20px 18px 8px}
+.shead{padding:18px 18px 8px}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px}
-h1{margin:0;font-family:'Fraunces',Georgia,serif;font-size:31px;letter-spacing:-.3px;font-weight:700;color:var(--accent)}
+.brand h2{font-family:var(--f-display);font-size:30px;color:var(--flamingo)}
 .sub{color:var(--muted);font-size:13px;margin-top:2px}
-.iconbtn{background:rgba(239,226,206,.06);border:1px solid var(--line);border-radius:12px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:17px;transition:.2s}
-.iconbtn:hover{background:rgba(239,226,206,.12)}
+.iconbtn{background:rgba(244,234,216,.06);border:1px solid var(--line);border-radius:12px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;font-size:17px}
 .search{margin-top:14px;position:relative}
-.search input{width:100%;padding:12px 14px 12px 40px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22);font-size:15px;outline:none;transition:.2s}
-.search input:focus{border-color:var(--accent)}
+.search input{width:100%;padding:12px 14px 12px 40px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.25);font-size:15px;outline:none}
+.search input:focus{border-color:var(--flamingo)}
 .search span{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.6}
-.rowlabel{padding:10px 18px 0;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
-.rowlabel button{background:none;border:none;color:var(--accent);font-size:11px;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;padding:0}
+.rowlabel{padding:10px 18px 0;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.rowlabel button{background:none;border:none;color:var(--flamingo);font:inherit;cursor:pointer;padding:0}
 .chips{display:flex;gap:7px;overflow-x:auto;padding:7px 18px 2px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(239,226,206,.04);cursor:pointer;font-size:13px;white-space:nowrap;transition:.15s;display:flex;align-items:center;gap:6px}
-.chip:hover{background:rgba(239,226,206,.10)}
+.chip{flex:none;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(244,234,216,.04);cursor:pointer;font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .chip .n{opacity:.55;font-size:11.5px}
-.chip.on{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 26%,transparent)}
+.chip.on{border-color:var(--c,var(--flamingo));background:color-mix(in srgb,var(--c,var(--flamingo)) 24%,transparent)}
 .tools{display:flex;gap:8px;padding:10px 18px;align-items:center}
-.tools select{flex:1;padding:9px 10px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid var(--line);font-size:13.5px;outline:none}
+.tools select{flex:1;min-width:0;padding:9px 10px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line);font-size:13.5px;outline:none}
 .tools select option{background:var(--panel2)}
 .count{padding:0 18px 8px;color:var(--muted);font-size:12.5px;display:flex;justify-content:space-between}
-.count b{color:var(--text)}
+.count b{color:var(--sand)}
 #list{flex:1;overflow-y:auto;padding:4px 12px 120px}
-.card{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:14px;cursor:pointer;transition:.15s;border:1px solid transparent;margin-bottom:3px}
-.card:hover,.card.active{background:rgba(239,226,206,.06);border-color:var(--line)}
+.card{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:14px;cursor:pointer;border:1px solid transparent;margin-bottom:3px}
+.card:hover,.card.active{background:rgba(244,234,216,.06);border-color:var(--line)}
 .card.active{border-color:var(--c)}
-.dot{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;background:color-mix(in srgb,var(--c) 24%,transparent);border:1px solid color-mix(in srgb,var(--c) 50%,transparent);position:relative}
+.dot{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;background:color-mix(in srgb,var(--c) 22%,transparent);border:1px solid color-mix(in srgb,var(--c) 55%,transparent);position:relative}
 .dot i{position:absolute;right:-5px;bottom:-5px;font-style:normal;font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;width:20px;height:20px;display:grid;place-items:center}
 .meta{flex:1;min-width:0}
 .meta .t{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .meta .s{color:var(--muted);font-size:12.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .right{text-align:right;font-size:12px;color:var(--muted);flex:none}
-.stars{color:#d9a54a;letter-spacing:1px}
-.badge{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:6px;background:rgba(199,154,70,.18);color:#e0bd7c;margin-left:4px;vertical-align:1px}
+.stars{color:var(--sun);letter-spacing:1px}
+.badge{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:6px;background:rgba(255,205,115,.16);color:var(--sun);margin-left:4px;vertical-align:1px}
 .empty{text-align:center;color:var(--muted);padding:40px 20px}
 .fabs{position:absolute;right:16px;bottom:24px;z-index:600;display:flex;flex-direction:column;gap:10px}
-.fab{width:52px;height:52px;border-radius:16px;border:1px solid var(--line);background:var(--panel);font-size:21px;cursor:pointer;display:grid;place-items:center;transition:.2s;box-shadow:0 10px 26px -10px #000}
-.fab:hover{transform:translateY(-2px)}
-.fab.main{background:var(--accent);border:none;font-size:28px;color:var(--accent-ink);font-weight:700}
-.pin{width:34px;height:34px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;background:var(--c);box-shadow:0 0 0 2.5px #1b1713,0 6px 14px -4px rgba(0,0,0,.7);transition:transform .2s}
+.fab{width:52px;height:52px;border-radius:16px;border:1px solid var(--line);background:var(--panel);font-size:21px;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 26px -10px #000}
+.fab.main{background:var(--flamingo);border:none;font-size:28px;color:var(--accent-ink);font-weight:700}
+.pin{width:34px;height:34px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;background:var(--c);box-shadow:0 0 0 2.5px var(--night),0 0 16px color-mix(in srgb,var(--c) 70%,transparent);transition:transform .2s}
 .pin span{transform:rotate(45deg);font-size:16px}
 .pin.approx{outline:2px dashed var(--c);outline-offset:2px}
 .pin.big{transform:rotate(-45deg) scale(1.3)}
-.me{width:18px;height:18px;border-radius:50%;background:#5b8fb0;border:3px solid #efe4d3;box-shadow:0 0 0 0 rgba(91,143,176,.7);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 18px rgba(91,143,176,0)}100%{box-shadow:0 0 0 0 rgba(91,143,176,0)}}
-.darktiles{filter:invert(1) hue-rotate(180deg) sepia(.45) saturate(.6) brightness(.82) contrast(.92)}
-.leaflet-popup-content-wrapper{background:var(--panel2);color:var(--text);border-radius:16px;border:1px solid var(--line);box-shadow:0 20px 50px -10px #000}
-.leaflet-popup-tip{background:var(--panel2)}
-.leaflet-popup-content{margin:15px 17px;font-family:'DM Sans',sans-serif;min-width:210px}
-.leaflet-container a.leaflet-popup-close-button{color:var(--muted)}
-.pp h3{margin:0 0 3px;font-size:18px;font-family:'Fraunces',Georgia,serif}
-.pp .s{color:var(--muted);font-size:13px}
-.pp .note{margin:9px 0 0;font-size:13.5px;color:#d9ccb8}
-.pp .vb{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.pp .vb span{font-size:11.5px;padding:3px 8px;border-radius:999px;background:rgba(208,168,116,.15);color:#e3c79e}
-.pp .row{display:flex;gap:8px;margin-top:12px}
-.btn{flex:1;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(239,226,206,.06);cursor:pointer;font-size:13.5px;text-align:center;text-decoration:none;color:var(--text)!important;transition:.15s;font-weight:500}
-.btn:hover{background:rgba(239,226,206,.13)}
-.btn.pri{background:var(--accent);color:var(--accent-ink)!important;border:none;font-weight:700}
-.btn.danger{color:#e08a6c!important}
-.leaflet-control-attribution{background:rgba(27,23,19,.75)!important;color:#7d7064!important;font-size:10px}
-.leaflet-control-attribution a{color:#998a7a!important}
-.leaflet-control-zoom a{background:var(--panel)!important;color:var(--text)!important;border-color:var(--line)!important}
-.modal{position:fixed;inset:0;background:rgba(10,8,6,.6);backdrop-filter:blur(5px);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
+.me{width:18px;height:18px;border-radius:50%;background:var(--mint);border:3px solid var(--sand);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(126,242,207,.7)}70%{box-shadow:0 0 0 18px rgba(126,242,207,0)}100%{box-shadow:0 0 0 0 rgba(126,242,207,0)}}
+.darktiles{filter:invert(1) hue-rotate(200deg) saturate(.7) brightness(.72) contrast(1.05)}
+.leaflet-container{font-family:var(--f-body)}
+.leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0}
+.leaflet-popup-tip{background:var(--sand)}
+.leaflet-popup-content{margin:0;min-width:250px}
+.leaflet-container a.leaflet-popup-close-button{color:#5a4a5c;top:8px;right:8px}
+.leaflet-control-attribution{background:rgba(10,15,36,.75)!important;color:#7d7f9e!important;font-size:10px}
+.leaflet-control-attribution a{color:#9a9cbf!important}
+.leaflet-control-zoom a{background:var(--panel)!important;color:var(--sand)!important;border-color:var(--line)!important}
+
+/* postcard popup */
+.pc{background:var(--sand);color:#21182a;border-radius:6px;padding:16px 16px 14px;position:relative;box-shadow:0 24px 60px -16px #000;background-image:repeating-linear-gradient(135deg,var(--c) 0 8px,transparent 8px 16px,#2b5aa8 16px 24px,transparent 24px 32px);background-size:100% 6px;background-repeat:no-repeat;background-position:top}
+.pc .stamp{position:absolute;right:14px;top:18px;width:46px;height:54px;border:2px dotted #21182a55;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--c) 30%,#fff);transform:rotate(4deg)}
+.pc .pm{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#6b5a6e;margin-top:6px}
+.pc h3{font-family:var(--f-display);font-size:26px;line-height:1;margin:6px 60px 4px 0;color:#21182a}
+.pc .s{font-size:13px;color:#4c3f55}
+.pc .note{margin-top:10px;font-size:14px;line-height:1.4;font-style:italic;color:#2e2438;border-top:1px dashed #21182a33;padding-top:8px}
+.pc .vb{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.pc .vb span{font-size:11px;padding:2px 8px;border-radius:99px;background:#21182a12;color:#3b2f45}
+.pc .tg{display:flex;gap:6px;margin-top:12px}
+.pc .tg button{flex:1;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:8px 6px;border-radius:8px;border:1.5px solid #21182a33;background:transparent;color:#21182a;cursor:pointer}
+.pc .tg button.on{background:#21182a;color:var(--sand);border-color:#21182a}
+.pc .row{display:flex;gap:6px;margin-top:8px}
+.pc .row a,.pc .row button{flex:1;text-align:center;text-decoration:none;font-size:13px;font-weight:600;padding:9px;border-radius:8px;border:0;cursor:pointer}
+.pc .row a{background:#2b5aa8;color:#fff!important}
+.pc .row button{background:var(--c);color:#21182a}
+.pc .stars{color:#c48a1c}
+
+/* modals */
+.modal{position:fixed;inset:0;background:rgba(5,8,20,.65);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
 .modal.open{display:flex}
 .sheet{width:470px;max-width:100%;max-height:92vh;overflow-y:auto;background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:22px}
-.sheet h2{margin:0 0 14px;font-size:22px;font-family:'Fraunces',Georgia,serif}
+.sheet h2{margin:0 0 14px;font-size:26px;font-family:var(--f-display);color:var(--flamingo)}
 .f{margin-bottom:13px}
-.f label,.flabel{display:block;font-size:11.5px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.f label,.flabel{display:block;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.12em}
 .f input,.f select,.f textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.25);font-size:15px;outline:none}
-.f input:focus,.f textarea:focus{border-color:var(--accent)}
+.f input:focus,.f textarea:focus{border-color:var(--flamingo)}
 .two{display:flex;gap:10px}.two>*{flex:1;min-width:0}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
-.seg button{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(239,226,206,.04);cursor:pointer;font-size:13px}
-.seg button.on{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 28%,transparent)}
+.seg button{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(244,234,216,.04);cursor:pointer;font-size:13px}
+.seg button.on{border-color:var(--c,var(--flamingo));background:color-mix(in srgb,var(--c,var(--flamingo)) 26%,transparent)}
 .addvibe{display:flex;gap:6px;margin-top:8px}
-.addvibe input{flex:1}
-.rate button{background:none;border:none;font-size:26px;cursor:pointer;color:#4a4036;padding:0 2px}
-.rate button.on{color:#d9a54a}
+.addvibe input{flex:1;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.25);font-size:14px;outline:none}
+.rate button{background:none;border:none;font-size:26px;cursor:pointer;color:#3c3f63;padding:0 2px}
+.rate button.on{color:var(--sun)}
+.checks{display:flex;gap:16px;flex-wrap:wrap}
+.checks label{text-transform:none;letter-spacing:0;font-family:var(--f-body);font-size:14px;color:var(--sand);display:flex;gap:6px;align-items:center}
 .results{margin-top:6px;border-radius:12px;overflow:hidden}
-.results div{padding:9px 11px;font-size:13px;cursor:pointer;background:rgba(239,226,206,.04);border-bottom:1px solid var(--line)}
-.results div:hover{background:rgba(239,226,206,.1)}
+.results div{padding:9px 11px;font-size:13px;cursor:pointer;background:rgba(244,234,216,.04);border-bottom:1px solid var(--line)}
 .locline{font-size:12.5px;color:var(--muted);margin-top:6px}
+.btn{flex:1;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(244,234,216,.06);cursor:pointer;font-size:13.5px;text-align:center;text-decoration:none;color:var(--sand)!important;font-weight:500}
+.btn.pri{background:var(--flamingo);color:var(--accent-ink)!important;border:none;font-weight:700}
+.btn.danger{color:#ff9a8a!important}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(30px);background:var(--panel2);border:1px solid var(--line);padding:12px 18px;border-radius:14px;z-index:3000;opacity:0;transition:.3s;font-size:14px;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .picking #map{cursor:crosshair}
-.pickbar{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1500;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:10px 18px;border-radius:999px;display:none}
+.pickbar{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:1500;background:var(--flamingo);color:var(--accent-ink);font-weight:700;padding:10px 18px;border-radius:999px;display:none}
 .picking .pickbar{display:block}
-.sync{font-size:11.5px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);cursor:pointer;background:none;color:var(--muted)}
-.sync.dirty{color:#e0bd7c;border-color:rgba(199,154,70,.5)}
-.sync.ok{color:#a9bf8a}
+.sync{font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--line);cursor:pointer;background:none;color:var(--muted);font-family:var(--f-mono)}
+.sync.dirty{color:var(--sun)}
+.sync.ok{color:var(--mint)}
 .handle{display:none}
+.wheelhint{position:absolute;display:block;left:50%;top:14px;transform:translateX(-50%);z-index:600;background:rgba(10,15,36,.8);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);pointer-events:none;transition:opacity .3s}
+@media (hover:none),(max-width:760px){.wheelhint{display:none}}
 @media (max-width:760px){
-  #side{position:fixed;left:0;right:0;bottom:0;width:100%;height:80vh;border-right:none;border-top:1px solid var(--line);border-radius:22px 22px 0 0;transition:transform .35s cubic-bezier(.2,.8,.2,1);transform:translateY(calc(80vh - 168px))}
+  #side{position:absolute;left:0;right:0;bottom:0;width:100%;height:78%;border-right:none;border-top:1px solid var(--line);border-radius:22px 22px 0 0;transition:transform .35s cubic-bezier(.2,.8,.2,1);transform:translateY(calc(100% - 168px))}
   #side.up{transform:translateY(0)}
-  .handle{display:block;width:44px;height:5px;border-radius:9px;background:rgba(239,226,206,.25);margin:9px auto 0}
+  .handle{display:block;width:44px;height:5px;border-radius:9px;background:rgba(244,234,216,.25);margin:9px auto 0}
   .handlezone{cursor:pointer}
-  .head{padding:8px 16px 6px}
-  h1{font-size:26px}
-  .search{margin-top:10px}
+  .shead{padding:8px 16px 6px}
+  .brand h2{font-size:24px}
   .fabs{bottom:184px;right:12px}
   .fab{width:48px;height:48px}
+}
+
+/* spin wheel */
+.wheelsheet{width:520px;text-align:center}
+.wheelwrap{position:relative;width:min(380px,80vw);aspect-ratio:1;max-width:100%;margin:6px auto 0}
+#wheel{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 0 0 6px var(--night),0 0 0 8px var(--sun),0 0 40px rgba(255,205,115,.35)}
+.pointer{position:absolute;left:50%;top:-8px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:26px solid var(--sand);filter:drop-shadow(0 2px 6px #000);z-index:2}
+.hub{position:absolute;inset:0;margin:auto;width:24%;height:24%;border-radius:50%;background:var(--night);border:3px solid var(--sun);display:grid;place-items:center;font-family:var(--f-display);font-size:clamp(14px,3vw,20px);color:var(--sun);cursor:pointer}
+.wseg{justify-content:center;margin:14px 0 6px}
+.wres{min-height:84px;margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.wres h3{font-family:var(--f-display);font-size:32px;color:var(--flamingo)}
+.wres p{margin:0;color:var(--muted);font-size:14px}
+
+footer{padding-block:48px calc(36px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
+footer .big{font-family:var(--f-display);font-size:clamp(48px,10vw,130px);line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(255,127,176,.45)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .band div{animation:none}
+  .hero{height:100svh}
+  .beat,.ch{transition:none}
 }
 </style>
 </head>
 <body>
 <div class="pickbar">Tap the map to drop the pin 📍</div>
-<div id="app">
-  <aside id="side">
-    <div class="handlezone" id="handlezone"><div class="handle"></div></div>
-    <div class="head">
-      <div class="brand">
-        <div><h1>Bern's List</h1><div class="sub" id="sub">Miami, my way</div></div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button class="sync" id="syncBtn" title="GitHub sync">local</button>
-          <button class="iconbtn" id="settingsBtn" title="Settings">⚙️</button>
+
+<header class="bar">
+  <a class="mark" href="#top">Bern<i>'</i>s List</a>
+  <nav aria-label="Sections">
+    <a class="hide-s" href="#near">Near me</a>
+    <a class="hide-s" href="#tour">Tour</a>
+    <a href="#mapapp">Map</a>
+    <button class="spin" type="button" id="spinNav">Spin</button>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero" aria-label="Bern's List intro">
+    <div class="stage">
+      <canvas id="scrub" aria-hidden="true"></canvas>
+      <div class="vig"></div>
+      <div class="hud" aria-hidden="true">
+        <div class="tl mono"><span>Biscayne Bay · Blue hour</span><span>Alt <b id="alt">400</b> ft</span><span>Heading <b id="hdg">262</b>° W</span></div>
+        <div class="tr mono">25.7743° N<br>80.1937° W</div>
+        <div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="cur" id="altTick">◂ 400</i></div>
+      </div>
+      <div class="beat" data-from="0" data-to=".34">
+        <span class="mono">// Miami, my way</span>
+        <h1 class="deco title">Bern<span>'</span>s List</h1>
+        <p class="lede" id="heroCount">Every restaurant, bar, coffee spot and hangout I've been to, on one map.</p>
+      </div>
+      <div class="beat off" data-from=".34" data-to=".7">
+        <span class="mono">// Every pin is a night</span>
+        <h2 class="deco line2">Every pin is a night I <span class="neon">remember.</span></h2>
+      </div>
+      <div class="beat off" data-from=".7" data-to="1.01">
+        <span class="mono">// From 400 ft to your next table</span>
+        <h2 class="deco line3">Where to <span class="neon m">tonight?</span></h2>
+        <div class="ctas">
+          <button class="btnx pink" type="button" id="spinHero">Spin for tonight</button>
+          <a class="btnx" href="#tour">Take the tour</a>
+          <a class="btnx" href="#mapapp">Open the map</a>
         </div>
       </div>
-      <div class="search"><span>🔎</span><input id="q" placeholder="Search places, food, vibes…" autocomplete="off"></div>
+      <div class="cue mono" id="cue" aria-hidden="true">Scroll to descend ↓</div>
     </div>
-    <div class="rowlabel"><span>Type</span><button id="clearBtn">Clear filters</button></div>
-    <div class="chips" id="cats"></div>
-    <div class="rowlabel"><span>Vibes</span></div>
-    <div class="chips" id="vibes"></div>
-    <div class="rowlabel"><span>Neighborhood</span></div>
-    <div class="chips" id="hoods"></div>
-    <div class="tools">
-      <select id="sort">
-        <option value="az">Sort: A → Z</option>
-        <option value="near">Sort: Nearest to me</option>
-        <option value="rating">Sort: My rating</option>
-        <option value="hood">Sort: Neighborhood</option>
-      </select>
-      <select id="extra">
-        <option value="all">Show: Everything</option>
-        <option value="fav">Show: Favorites ❤️</option>
-        <option value="missing">Show: Needs a pin 📍</option>
-      </select>
+  </section>
+
+  <div class="band" aria-hidden="true"><div id="bandTxt">✦ Eats ✦ Bars ✦ Coffee ✦ Spots ✦ Miami, my way ✦ Eats ✦ Bars ✦ Coffee ✦ Spots ✦ Miami, my way</div></div>
+
+  <section class="near wrap" id="near">
+    <div class="k mono">Closest to you</div>
+    <div class="head">
+      <div>
+        <h2 class="deco h2">Right around <span class="neon m">the corner</span></h2>
+        <p id="nearSub">Share your location and I'll line up my five closest spots, with how far each one is.</p>
+      </div>
+      <button class="btnx mint" type="button" id="nearBtn">📍 Use my location</button>
     </div>
-    <div class="count"><span id="countTxt"></span><span id="nearTxt"></span></div>
-    <div id="list"></div>
-  </aside>
-  <div id="map"></div>
-  <div class="fabs">
-    <button class="fab" id="randBtn" title="Surprise me">🎲</button>
-    <button class="fab" id="locBtn" title="Where am I">🧭</button>
-    <button class="fab main" id="addBtn" title="Add place">+</button>
+    <div class="closest" id="closest"></div>
+  </section>
+
+  <section class="tour" id="tour" aria-label="Neighborhood tour">
+    <div class="grid">
+      <div class="mapcol"><div id="tourMap" aria-hidden="true"></div></div>
+      <div class="chapters" id="chapters">
+        <div class="intro">
+          <div class="k mono">The tour</div>
+          <h2 class="deco h2">Neighborhood <span class="neon">by neighborhood</span></h2>
+          <p>Scroll through my most-visited parts of town, south to north. The map follows along.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapapp" aria-label="The full map">
+    <div id="app">
+      <aside id="side">
+        <div class="handlezone" id="handlezone"><div class="handle"></div></div>
+        <div class="shead">
+          <div class="brand">
+            <div><h2>The Map</h2><div class="sub" id="sub">Miami, my way</div></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="sync" id="syncBtn" title="GitHub sync">local</button>
+              <button class="iconbtn" id="settingsBtn" title="Settings" aria-label="Settings">⚙️</button>
+            </div>
+          </div>
+          <div class="search"><span>🔎</span><input id="q" placeholder="Search places, food, vibes…" autocomplete="off"></div>
+        </div>
+        <div class="rowlabel"><span>Type</span><button id="clearBtn">Clear filters</button></div>
+        <div class="chips" id="cats"></div>
+        <div class="rowlabel"><span>Vibes</span></div>
+        <div class="chips" id="vibes"></div>
+        <div class="rowlabel"><span>Neighborhood</span></div>
+        <div class="chips" id="hoods"></div>
+        <div class="tools">
+          <select id="sort" aria-label="Sort">
+            <option value="az">Sort: A → Z</option>
+            <option value="near">Sort: Nearest to me</option>
+            <option value="rating">Sort: My rating</option>
+            <option value="hood">Sort: Neighborhood</option>
+          </select>
+          <select id="extra" aria-label="Show">
+            <option value="all">Show: Everything</option>
+            <option value="fav">Show: Go again ❤️</option>
+            <option value="want">Show: Want to go 📌</option>
+            <option value="missing">Show: Needs a pin 📍</option>
+          </select>
+        </div>
+        <div class="count"><span id="countTxt"></span><span id="nearTxt"></span></div>
+        <div id="list"></div>
+      </aside>
+      <div id="map"></div>
+      <div class="wheelhint" id="wheelhint">Click the map to zoom with scroll</div>
+      <div class="fabs">
+        <button class="fab" id="randBtn" title="Spin for tonight" aria-label="Spin for tonight">🎡</button>
+        <button class="fab" id="locBtn" title="Where am I" aria-label="Where am I">🧭</button>
+        <button class="fab main" id="addBtn" title="Add place" aria-label="Add place">+</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="big" aria-hidden="true">Bern's List</div>
+    <div class="mono" id="footTxt">Miami, FL</div>
+  </div>
+</footer>
+
+<div class="modal" id="wheelModal" role="dialog" aria-label="Spin for tonight">
+  <div class="sheet wheelsheet">
+    <h2>Where to tonight?</h2>
+    <div class="seg wseg" id="wCats"></div>
+    <div class="checks" style="justify-content:center"><label><input type="checkbox" id="wWant"> Only places I want to try 📌</label></div>
+    <div class="wheelwrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="760" height="760" aria-hidden="true"></canvas>
+      <button class="hub" id="wSpin" type="button">Spin</button>
+    </div>
+    <div class="wres" id="wRes"><p>Pick a type, then spin.</p></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn" id="wClose" type="button">Close</button>
+      <button class="btn pri" id="wGo" type="button" disabled>Take me there</button>
+    </div>
   </div>
 </div>
 
 <div class="modal" id="editModal">
   <div class="sheet">
     <h2 id="editTitle">Add a place</h2>
-    <div class="f"><label>Name</label><input id="fName" placeholder="e.g. Boia De"></div>
+    <div class="f"><label for="fName">Name</label><input id="fName" placeholder="e.g. Boia De"></div>
     <div class="f"><span class="flabel">Type — pick all that fit</span><div class="seg" id="fCat"></div></div>
     <div class="f"><span class="flabel">Vibes — tap to add, or create your own</span><div class="seg" id="fVibes"></div>
-      <div class="addvibe"><input id="fNewVibe" placeholder="New vibe, e.g. Waterfront" style="padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.25);font-size:14px;outline:none"><button class="btn" style="flex:none" id="addVibeBtn" type="button">+ Add</button></div>
+      <div class="addvibe"><input id="fNewVibe" placeholder="New vibe, e.g. Waterfront"><button class="btn" style="flex:none" id="addVibeBtn" type="button">+ Add</button></div>
     </div>
     <div class="two">
-      <div class="f"><label>Cuisine / kind</label><input id="fTag" placeholder="Italian, Cocktails…" list="tagList"></div>
-      <div class="f"><label>Neighborhood</label><input id="fHood" placeholder="Wynwood" list="hoodList"></div>
+      <div class="f"><label for="fTag">Cuisine / kind</label><input id="fTag" placeholder="Italian, Cocktails…" list="tagList"></div>
+      <div class="f"><label for="fHood">Neighborhood</label><input id="fHood" placeholder="Wynwood" list="hoodList"></div>
     </div>
     <datalist id="tagList"></datalist><datalist id="hoodList"></datalist>
-    <div class="f"><label>My rating</label><div class="rate" id="fRate"></div></div>
-    <div class="f"><label>Notes</label><textarea id="fNote" rows="2" placeholder="What to order, who you went with…"></textarea></div>
-    <div class="f"><label style="text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)"><input type="checkbox" id="fFav" style="width:auto;vertical-align:-2px"> Favorite ❤️</label></div>
+    <div class="f"><span class="flabel">My rating</span><div class="rate" id="fRate"></div></div>
+    <div class="f"><label for="fOrder">Must order</label><input id="fOrder" placeholder="The spicy rigatoni, the carajillo…"></div>
+    <div class="f"><label for="fNote">Notes</label><textarea id="fNote" rows="2" placeholder="Who you went with, when to go…"></textarea></div>
+    <div class="f checks">
+      <label><input type="checkbox" id="fFav"> Go again ❤️</label>
+      <label><input type="checkbox" id="fWant"> Want to go 📌</label>
+    </div>
     <div class="f">
-      <label>Location</label>
+      <label for="fAddr">Location</label>
       <div style="display:flex;gap:6px"><input id="fAddr" placeholder="Search address or place name"><button class="btn" style="flex:none" id="geoBtn" type="button">Find</button></div>
       <div class="results" id="geoRes"></div>
       <div style="display:flex;gap:6px;margin-top:8px">
@@ -212,10 +481,10 @@ h1{margin:0;font-family:'Fraunces',Georgia,serif;font-size:31px;letter-spacing:-
     <h2>Sync with GitHub</h2>
     <p style="color:var(--muted);font-size:13.5px;margin-top:-4px">Paste your token once on each device and every add/edit saves to your repo, so the map stays in sync on your phone and laptop. The token stays in this browser only.</p>
     <div class="two">
-      <div class="f"><label>GitHub user</label><input id="sOwner" placeholder="your-username"></div>
-      <div class="f"><label>Repo</label><input id="sRepo" placeholder="berns-list"></div>
+      <div class="f"><label for="sOwner">GitHub user</label><input id="sOwner" placeholder="your-username"></div>
+      <div class="f"><label for="sRepo">Repo</label><input id="sRepo" placeholder="berns-list"></div>
     </div>
-    <div class="f"><label>Token (Contents: read & write)</label><input id="sToken" type="password" placeholder="github_pat_…"></div>
+    <div class="f"><label for="sToken">Token (Contents: read & write)</label><input id="sToken" type="password" placeholder="github_pat_…"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" id="exportBtn">⬇️ Export JSON</button>
       <button class="btn" id="setCancel">Close</button>
@@ -230,28 +499,36 @@ h1{margin:0;font-family:'Fraunces',Georgia,serif;font-size:31px;letter-spacing:-
 const CATS={Restaurant:{e:'🍽️',label:'Eats'},Bar:{e:'🍸',label:'Bars'},Coffee:{e:'☕',label:'Coffee'},Spot:{e:'🌴',label:'Spots'}};
 const DEFAULT_VIBES=['Waterfront','Rooftop','Date night','Late night','Live music','Brunch','Outdoor seating','Sunset','Dog friendly','Cheap eats'];
 const LS='bernslist.v1';
+const FRAMES=94;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
 let places=[], me=null, meMarker=null, markers={}, editing=null, picking=false, draftLoc=null;
 const state={cats:new Set(),vibes:new Set(),hoods:new Set(),q:'',sort:'az',extra:'all',active:null};
 let cfg=store.get(LS+'.cfg',{owner:'',repo:'',token:''});
 if(!cfg.owner && location.hostname.endsWith('github.io')){cfg.owner=location.hostname.split('.')[0];cfg.repo=location.pathname.split('/').filter(Boolean)[0]||(cfg.owner+'.github.io');}
 
-const map=L.map('map',{zoomControl:false}).setView([25.80,-80.19],12);
+const TILE='https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const map=L.map('map',{zoomControl:false,scrollWheelZoom:false}).setView([25.80,-80.19],12);
 L.control.zoom({position:'topright'}).addTo(map);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors',className:'darktiles'}).addTo(map);
+L.tileLayer(TILE,{maxZoom:19,attribution:'&copy; OpenStreetMap contributors',className:'darktiles'}).addTo(map);
+map.on('click focus',()=>{map.scrollWheelZoom.enable();$('#wheelhint').style.opacity=0});
+map.getContainer().addEventListener('mouseleave',()=>map.scrollWheelZoom.disable());
 
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2400)}
 function dist(a,b){const R=3958.8,r=x=>x*Math.PI/180;const dLat=r(b.lat-a.lat),dLng=r(b.lng-a.lng);const h=Math.sin(dLat/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+const mi=d=>d<10?d.toFixed(1):String(Math.round(d));
 const hasLoc=p=>p.lat!=null&&p.lng!=null;
 const stars=n=>n?'<span class="stars">'+'★'.repeat(n)+'</span>':'';
 const slug=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||('p'+Date.now());
 const main=p=>p.cats[0]||'Spot';
 const catLabel=p=>p.cats.map(c=>CATS[c]?.label.replace(/s$/,'')).join(' + ');
-function normalize(p){if(!Array.isArray(p.cats))p.cats=p.cat?[p.cat]:['Spot'];p.cats=p.cats.filter(c=>CATS[c]);if(!p.cats.length)p.cats=['Spot'];delete p.cat;if(!Array.isArray(p.vibes))p.vibes=[];return p}
+function normalize(p){if(!Array.isArray(p.cats))p.cats=p.cat?[p.cat]:['Spot'];p.cats=p.cats.filter(c=>CATS[c]);if(!p.cats.length)p.cats=['Spot'];delete p.cat;if(!Array.isArray(p.vibes))p.vibes=[];p.want=!!p.want;return p}
 const allVibes=()=>{const s=new Set();places.forEach(p=>p.vibes.forEach(v=>s.add(v)));return [...s].sort()};
+const rank=(a,b)=>(b.fav-a.fav)||((b.rating||0)-(a.rating||0))||a.name.localeCompare(b.name);
 
 // ---------- Data ----------
 async function load(){
@@ -266,7 +543,7 @@ async function load(){
     setSync(cfg.token?'ok':'local');
   }
   places.forEach(normalize);
-  renderAll();fitAll();
+  renderAll();fitAll();buildTour();renderClosest();heroCopy();
 }
 function persist(){store.set(LS+'.places',places);store.set(LS+'.dirty',true);setSync('dirty');if(cfg.token)syncUp();}
 function setSync(s){const b=$('#syncBtn');b.className='sync '+(s==='ok'?'ok':s==='dirty'?'dirty':'');b.textContent=s==='ok'?'✓ synced':s==='dirty'?(cfg.token?'syncing…':'● unsaved'):s==='err'?'⚠ retry sync':'local';}
@@ -288,14 +565,106 @@ async function syncUp(){
   syncing=false;
 }
 
+// ---------- Hero scroll-scrub ----------
+(()=>{
+  const cv=$('#scrub'),ctx=cv.getContext('2d'),hero=$('#hero'),beats=[...document.querySelectorAll('.beat')];
+  const N=FRAMES,imgs=new Array(N),src=i=>'h'+String(i+1).padStart(3,'0')+'.jpg';
+  let cur=0,target=0,drawn=-1;
+  const load=i=>{if(imgs[i])return imgs[i];const im=new Image();im.decoding='async';im.src=src(i);im.onload=()=>{if(Math.round(cur)===i||drawn<0)draw(true)};return(imgs[i]=im)};
+  load(0);load(N-1);const order=[];for(let s=16;s>=1;s=s/2|0){for(let i=0;i<N;i+=s)order.push(i);if(s===1)break}
+  let qi=0;(function pump(){for(let k=0;k<6&&qi<order.length;k++)load(order[qi++]);if(qi<order.length)setTimeout(pump,60)})();
+  const near=i=>{for(let d=0;d<N;d++){const a=imgs[i-d],b=imgs[i+d];if(a&&a.complete&&a.naturalWidth)return a;if(b&&b.complete&&b.naturalWidth)return b}return null};
+  function size(){const dpr=Math.min(devicePixelRatio||1,2);cv.width=cv.clientWidth*dpr;cv.height=cv.clientHeight*dpr;draw(true)}
+  function draw(force){const i=Math.max(0,Math.min(N-1,Math.round(cur)));if(!force&&i===drawn)return;const im=near(i);if(!im)return;const cw=cv.width,ch=cv.height,r=Math.max(cw/im.naturalWidth,ch/im.naturalHeight),w=im.naturalWidth*r,h=im.naturalHeight*r;ctx.drawImage(im,(cw-w)/2,(ch-h)/2,w,h);drawn=i}
+  const prog=()=>{const r=hero.getBoundingClientRect(),s=r.height-innerHeight;return s>0?Math.max(0,Math.min(1,-r.top/s)):0};
+  function onScroll(){const p=prog();target=p*(N-1);beats.forEach(b=>b.classList.toggle('off',!(p>=+b.dataset.from&&p<+b.dataset.to)));
+    const alt=Math.round(400*(1-p)*(1-p)+40*p);$('#alt').textContent=alt;$('#altTick').textContent='◂ '+alt;$('#altTick').style.top=(p*100)+'%';
+    $('#hdg').textContent=String(262+Math.round(p*8));$('#cue').style.opacity=p>.04?0:1}
+  function tick(){cur+=(target-cur)*.14;if(Math.abs(target-cur)<.01)cur=target;draw(false);requestAnimationFrame(tick)}
+  if(reduce){cur=target=N-1}
+  addEventListener('resize',size);addEventListener('scroll',onScroll,{passive:true});size();onScroll();if(!reduce)requestAnimationFrame(tick);else load(N-1).onload=()=>draw(true);
+})();
+function heroCopy(){
+  const hoods=new Set(places.map(p=>p.hood)).size;
+  $('#heroCount').textContent=`${places.length} restaurants, bars, coffee spots and hangouts across ${hoods} neighborhoods. Every one of them, I've been to.`;
+  const c={};places.forEach(p=>p.cats.forEach(k=>c[k]=(c[k]||0)+1));
+  const seg=`✦ ${c.Restaurant||0} eats ✦ ${c.Bar||0} bars ✦ ${c.Coffee||0} coffee ✦ ${c.Spot||0} spots ✦ ${hoods} neighborhoods ✦ Miami, my way `;
+  $('#bandTxt').textContent=seg+seg;
+  $('#footTxt').textContent=`${places.length} places · Miami, FL`;
+}
+
+// ---------- Near me ----------
+function renderClosest(){
+  const el=$('#closest');
+  if(!me){
+    const picks=places.filter(p=>p.fav&&hasLoc(p)).sort(rank).slice(0,5);
+    const fill=picks.length<5?places.filter(hasLoc).sort(rank).filter(p=>!picks.includes(p)).slice(0,5-picks.length):[];
+    el.innerHTML=[...picks,...fill].map(p=>`<button class="cl" type="button" data-id="${p.id}" style="--c:var(--${main(p)})"><span class="d">${CATS[main(p)].e}</span><span class="n">${esc(p.name)}</span><span class="s">${esc(p.tag)} · ${esc(p.hood)}</span></button>`).join('');
+    return;
+  }
+  const arr=places.filter(hasLoc).map(p=>({p,d:dist(me,p)})).sort((a,b)=>a.d-b.d).slice(0,5);
+  el.innerHTML=arr.map(({p,d})=>`<button class="cl" type="button" data-id="${p.id}" style="--c:var(--${main(p)})"><span class="d">${mi(d)}<small>mi</small></span><span class="n">${esc(p.name)}</span><span class="s">${esc(p.tag)} · ${d<1?Math.max(1,Math.round(d*20))+' min walk':Math.max(2,Math.round(d*3+3))+' min drive'}</span></button>`).join('');
+  $('#nearSub').textContent=`Your five closest spots right now. Closest: ${arr[0]?.p.name} at ${mi(arr[0]?.d||0)} mi.`;
+}
+$('#closest').onclick=e=>{const b=e.target.closest('.cl');if(b&&b.dataset.id)goTo(b.dataset.id)};
+$('#nearBtn').onclick=()=>locate(false,true);
+
+// ---------- Tour ----------
+let tourMap,tourDots={},chapterBounds=[];
+function centroid(arr){const n=arr.length;return{lat:arr.reduce((s,p)=>s+p.lat,0)/n,lng:arr.reduce((s,p)=>s+p.lng,0)/n}}
+function buildTour(){
+  const by={};places.filter(hasLoc).forEach(p=>(by[p.hood]=by[p.hood]||[]).push(p));
+  let hoods=Object.entries(by).filter(([,a])=>a.length>=3).sort((a,b)=>b[1].length-a[1].length).slice(0,8);
+  hoods.sort((a,b)=>centroid(a[1]).lat-centroid(b[1]).lat);
+  const box=$('#chapters');box.querySelectorAll('.ch').forEach(n=>n.remove());
+  hoods.forEach(([h,arr],i)=>{
+    const c=centroid(arr),cnt={};arr.forEach(p=>p.cats.forEach(k=>cnt[k]=(cnt[k]||0)+1));
+    const rated=arr.filter(p=>p.rating),avg=rated.length?(rated.reduce((s,p)=>s+p.rating,0)/rated.length).toFixed(1):null;
+    const favs=arr.filter(p=>p.fav).length;
+    const top=[...arr].sort(rank).slice(0,3);
+    const sec=document.createElement('article');sec.className='ch';sec.dataset.i=i;
+    sec.innerHTML=`<span class="num mono">// ${String(i+1).padStart(2,'0')} of ${String(hoods.length).padStart(2,'0')}</span>
+      <h3>${esc(h)}</h3>
+      <div class="specs mono">
+        <div><b>${arr.length}</b><span>spots</span></div>
+        <div><b>${Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([k,n])=>CATS[k].e).slice(0,3).join('')}</b><span>${Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([k,n])=>n+' '+CATS[k].label.toLowerCase()).slice(0,2).join(' · ')}</span></div>
+        <div><b class="dme" data-lat="${c.lat}" data-lng="${c.lng}">${avg?avg+'★':favs?favs+'❤️':c.lat.toFixed(2)+'°'}</b><span>${avg?'my avg':favs?'go again':c.lat.toFixed(3)+'° N'}</span></div>
+      </div>
+      <div class="picks">${top.map(p=>`<button class="pick" type="button" data-id="${p.id}" style="--c:var(--${main(p)})"><span class="e">${CATS[main(p)].e}</span><span style="min-width:0"><span class="t" style="display:block">${esc(p.name)}</span><span class="s">${esc(p.tag)}${p.vibes.length?' · '+esc(p.vibes[0]):''}</span></span><span class="r">${p.fav?'❤️ ':''}${p.rating?'★'.repeat(p.rating):''}</span></button>`).join('')}</div>`;
+    box.appendChild(sec);
+    chapterBounds[i]={hood:h,b:L.latLngBounds(arr.map(p=>[p.lat,p.lng])).pad(.35),ids:new Set(arr.map(p=>p.id))};
+  });
+  if(!tourMap){
+    tourMap=L.map('tourMap',{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,touchZoom:false,boxZoom:false,keyboard:false,tap:false}).setView([25.80,-80.19],11);
+    L.tileLayer(TILE,{maxZoom:19,className:'darktiles'}).addTo(tourMap);
+  }
+  Object.values(tourDots).forEach(m=>tourMap.removeLayer(m));tourDots={};
+  places.filter(hasLoc).forEach(p=>{tourDots[p.id]=L.marker([p.lat,p.lng],{icon:L.divIcon({className:'',html:`<div class="tdot" style="--c:var(--${main(p)})"></div>`,iconSize:[12,12],iconAnchor:[6,6]}),interactive:false}).addTo(tourMap)});
+  const all=places.filter(hasLoc);if(all.length)tourMap.fitBounds(L.latLngBounds(all.map(p=>[p.lat,p.lng])).pad(.1));
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)activate(+e.target.dataset.i)}),{rootMargin:innerWidth<=860?'-62% 0px -30% 0px':'-45% 0px -45% 0px'});
+  box.querySelectorAll('.ch').forEach(n=>io.observe(n));
+  box.onclick=e=>{const b=e.target.closest('.pick');if(b)goTo(b.dataset.id)};
+  updateTourDist();
+}
+let activeCh=-1;
+function activate(i){
+  if(i===activeCh)return;activeCh=i;
+  document.querySelectorAll('.ch').forEach(n=>n.classList.toggle('on',+n.dataset.i===i));
+  const c=chapterBounds[i];if(!c)return;
+  tourMap.flyToBounds(c.b,{duration:reduce?0:1.4,maxZoom:15});
+  Object.entries(tourDots).forEach(([id,m])=>{const el=m.getElement()?.firstChild;if(el){el.classList.toggle('dim',!c.ids.has(id));el.classList.toggle('hot',c.ids.has(id))}});
+}
+function updateTourDist(){if(!me)return;document.querySelectorAll('.dme').forEach(b=>{const d=dist(me,{lat:+b.dataset.lat,lng:+b.dataset.lng});b.textContent=mi(d);b.nextElementSibling.textContent='mi from you'})}
+
 // ---------- Filtering ----------
 function matches(p,ignore){
   if(ignore!=='cats'&&state.cats.size&&!p.cats.some(c=>state.cats.has(c)))return false;
   if(ignore!=='vibes'&&state.vibes.size&&![...state.vibes].every(v=>p.vibes.includes(v)))return false;
   if(ignore!=='hoods'&&state.hoods.size&&!state.hoods.has(p.hood))return false;
   if(state.extra==='fav'&&!p.fav)return false;
+  if(state.extra==='want'&&!p.want)return false;
   if(state.extra==='missing'&&hasLoc(p))return false;
-  if(state.q){const q=state.q.toLowerCase();if(![p.name,p.tag,p.hood,p.note,p.addr,...p.vibes,...p.cats.map(c=>CATS[c]?.label)].join(' ').toLowerCase().includes(q))return false;}
+  if(state.q){const q=state.q.toLowerCase();if(![p.name,p.tag,p.hood,p.note,p.order,p.addr,...p.vibes,...p.cats.map(c=>CATS[c]?.label)].join(' ').toLowerCase().includes(q))return false;}
   return true;
 }
 function filtered(){
@@ -337,26 +706,31 @@ function renderList(){
       ${dotHtml(p)}
       <div class="meta"><div class="t">${esc(p.name)}${!hasLoc(p)?'<span class="badge">no pin</span>':p.status==='approx'?'<span class="badge">≈</span>':''}</div>
       <div class="s">${esc(p.tag)} · ${esc(p.hood)}${p.vibes.length?' · '+esc(p.vibes.join(', ')):''}</div></div>
-      <div class="right">${p.fav?'<div>❤️</div>':''}${stars(p.rating)}${d!=null?`<div>${d<10?d.toFixed(1):Math.round(d)} mi</div>`:''}</div>
+      <div class="right">${p.fav?'<div>❤️</div>':p.want?'<div>📌</div>':''}${stars(p.rating)}${d!=null?`<div>${mi(d)} mi</div>`:''}</div>
     </div>`}).join('');
 }
 function icon(p,on){return L.divIcon({className:'',html:`<div class="pin ${p.status==='approx'?'approx':''} ${on?'big':''}" style="--c:var(--${main(p)})"><span>${CATS[main(p)].e}</span></div>`,iconSize:[34,34],iconAnchor:[17,34],popupAnchor:[0,-32]})}
 function popupHtml(p){
   const g=hasLoc(p)?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name)}%20${p.lat},${p.lng}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+' Miami FL')}`;
-  return `<div class="pp"><h3>${esc(p.name)} ${p.fav?'❤️':''}</h3><div class="s">${p.cats.map(c=>CATS[c].e).join('')} ${esc(catLabel(p))} · ${esc(p.tag)} · ${esc(p.hood)}</div>
-  ${p.addr?`<div class="s" style="margin-top:3px">📍 ${esc(p.addr)}</div>`:''}
-  ${p.rating?`<div style="margin-top:6px">${stars(p.rating)}</div>`:''}
+  const d=me&&hasLoc(p)?` · ${mi(dist(me,p))} mi from you`:'';
+  return `<div class="pc" style="--c:var(--${main(p)})"><div class="stamp">${CATS[main(p)].e}</div>
+  <div class="pm">${esc(p.hood)} · Miami FL${d}</div>
+  <h3>${esc(p.name)}</h3><div class="s">${esc(catLabel(p))} · ${esc(p.tag)}${p.rating?' · '+stars(p.rating):''}</div>
+  ${p.addr?`<div class="s" style="margin-top:3px">${esc(p.addr)}</div>`:''}
   ${p.vibes.length?`<div class="vb">${p.vibes.map(v=>`<span>${esc(v)}</span>`).join('')}</div>`:''}
-  ${p.note?`<div class="note">${esc(p.note)}</div>`:''}
-  ${p.status==='approx'?'<div class="note" style="color:#e0bd7c;font-size:12px">≈ Pin is approximate — Edit to fix</div>':''}
-  <div class="row"><a class="btn" href="${g}" target="_blank" rel="noopener">🗺️ Directions</a><button class="btn pri" onclick="openEdit('${p.id}')">Edit</button></div></div>`;
+  ${p.order?`<div class="note"><b style="font-style:normal">Must order:</b> ${esc(p.order)}</div>`:''}
+  ${p.note?`<div class="note">“${esc(p.note)}”</div>`:''}
+  ${p.status==='approx'?'<div class="s" style="margin-top:8px;color:#9a6a12;font-size:12px">≈ Pin is approximate — Edit to fix</div>':''}
+  <div class="tg"><button type="button" class="${p.fav?'on':''}" onclick="toggleFlag('${p.id}','fav')">❤️ Go again</button><button type="button" class="${p.want?'on':''}" onclick="toggleFlag('${p.id}','want')">📌 Want to go</button></div>
+  <div class="row"><a href="${g}" target="_blank" rel="noopener">Directions</a><button type="button" onclick="openEdit('${p.id}')">Edit</button></div></div>`;
 }
+window.toggleFlag=(id,k)=>{const p=places.find(x=>x.id===id);if(!p)return;p[k]=!p[k];if(k==='fav'&&p.fav)p.want=false;if(k==='want'&&p.want)p.fav=false;persist();renderList();markers[id]&&markers[id].setPopupContent(popupHtml(p));toast(k==='fav'?(p.fav?'Added to Go again ❤️':'Removed from Go again'):(p.want?'Added to Want to go 📌':'Removed from Want to go'));};
 function renderMarkers(){
   const vis=new Set(filtered().map(p=>p.id));
   Object.values(markers).forEach(m=>map.removeLayer(m));markers={};
   places.forEach(p=>{
     if(!hasLoc(p)||!vis.has(p.id))return;
-    const m=L.marker([p.lat,p.lng],{icon:icon(p,state.active===p.id),riseOnHover:true}).addTo(map).bindPopup(()=>popupHtml(p),{maxWidth:290});
+    const m=L.marker([p.lat,p.lng],{icon:icon(p,state.active===p.id),riseOnHover:true}).addTo(map).bindPopup(()=>popupHtml(p),{maxWidth:300,minWidth:250});
     m.on('click',()=>{state.active=p.id;highlight();});markers[p.id]=m;
   });
 }
@@ -374,6 +748,8 @@ function focus(p){
   setTimeout(()=>markers[p.id]&&markers[p.id].openPopup(),650);
   if(innerWidth<=760)$('#side').classList.remove('up');
 }
+function goTo(id){const p=places.find(x=>x.id===id);if(!p)return;if(!matches(p)){state.cats.clear();state.vibes.clear();state.hoods.clear();state.q='';$('#q').value='';state.extra='all';$('#extra').value='all';renderAll();}
+  $('#mapapp').scrollIntoView({behavior:reduce?'auto':'smooth'});setTimeout(()=>{map.invalidateSize();focus(p)},reduce?50:700);}
 
 // ---------- Events ----------
 function chipClick(e){const b=e.target.closest('.chip');if(!b)return;const set=state[b.dataset.k],v=b.dataset.v;if(!v)set.clear();else set.has(v)?set.delete(v):set.add(v);renderAll();fitAll();}
@@ -382,12 +758,11 @@ $('#clearBtn').onclick=()=>{state.cats.clear();state.vibes.clear();state.hoods.c
 $('#q').oninput=e=>{state.q=e.target.value.trim();renderAll();};
 $('#q').onfocus=()=>{if(innerWidth<=760)$('#side').classList.add('up')};
 $('#sort').onchange=e=>{state.sort=e.target.value;if(state.sort==='near'&&!me)locate(true);else renderList();};
-$('#extra').onchange=e=>{state.extra=e.target.value;renderAll();};
+$('#extra').onchange=e=>{state.extra=e.target.value;renderAll();fitAll();};
 $('#list').onclick=e=>{const c=e.target.closest('.card');if(c)focus(places.find(p=>p.id===c.dataset.id));};
 $('#handlezone').onclick=()=>$('#side').classList.toggle('up');
-$('#randBtn').onclick=()=>{const arr=filtered().filter(hasLoc);if(!arr.length)return toast('No places with pins in this filter');const p=arr[Math.floor(Math.random()*arr.length)];toast('🎲 Tonight: '+p.name);focus(p);};
 $('#locBtn').onclick=()=>locate(false);
-function locate(sortAfter){
+function locate(sortAfter,fromNear){
   if(!navigator.geolocation)return toast('Location not available');
   toast('Finding you…');
   navigator.geolocation.getCurrentPosition(pos=>{
@@ -395,16 +770,50 @@ function locate(sortAfter){
     if(meMarker)map.removeLayer(meMarker);
     meMarker=L.marker([me.lat,me.lng],{icon:L.divIcon({className:'',html:'<div class="me"></div>',iconSize:[18,18],iconAnchor:[9,9]}),zIndexOffset:1000}).addTo(map).bindTooltip('You');
     state.sort='near';$('#sort').value='near';
-    renderList();map.flyTo([me.lat,me.lng],14);
-    const near=filtered().find(hasLoc);near&&toast(`Closest: ${near.name} (${dist(me,near).toFixed(1)} mi)`);
+    renderList();renderClosest();updateTourDist();
+    if(!fromNear)map.flyTo([me.lat,me.lng],14);
+    const near=filtered().find(hasLoc);near&&toast(`Closest: ${near.name} (${mi(dist(me,near))} mi)`);
   },()=>{toast('Couldn’t get your location');if(state.sort==='near'){state.sort='az';$('#sort').value='az';}},{enableHighAccuracy:true,timeout:10000});
 }
+
+// ---------- Spin wheel ----------
+const W={cats:new Set(),pool:[],angle:0,spinning:false,pick:null};
+function wheelPool(){let a=places.filter(hasLoc).filter(p=>!W.cats.size||p.cats.some(c=>W.cats.has(c)));if($('#wWant').checked)a=a.filter(p=>p.want);
+  a=a.sort(()=>Math.random()-.5).slice(0,12);return a}
+function drawWheelCats(){$('#wCats').innerHTML=`<button type="button" class="${!W.cats.size?'on':''}" data-k="">All</button>`+Object.entries(CATS).map(([k,v])=>`<button type="button" class="${W.cats.has(k)?'on':''}" style="--c:var(--${k})" data-k="${k}">${v.e} ${v.label}</button>`).join('')}
+function drawWheel(){
+  const c=$('#wheel'),x=c.getContext('2d'),R=c.width/2,n=W.pool.length;x.clearRect(0,0,c.width,c.height);
+  if(!n){x.fillStyle=css('--night2');x.beginPath();x.arc(R,R,R,0,7);x.fill();x.fillStyle=css('--muted');x.font='28px '+css('--f-body');x.textAlign='center';x.fillText('No places match',R,R+R*.55);return}
+  const cols=[css('--flamingo'),css('--night2'),css('--mint'),'#1d2a5e',css('--sun'),'#26174a',css('--violet'),'#0f1d44'];
+  for(let i=0;i<n;i++){const a0=W.angle+i*2*Math.PI/n-Math.PI/2,a1=a0+2*Math.PI/n;
+    x.beginPath();x.moveTo(R,R);x.arc(R,R,R-4,a0,a1);x.closePath();const col=cols[i%cols.length];x.fillStyle=col;x.fill();x.strokeStyle='rgba(244,234,216,.25)';x.lineWidth=2;x.stroke();
+    x.save();x.translate(R,R);x.rotate((a0+a1)/2);x.textAlign='right';const dark=i%2===0;x.fillStyle=dark?'#1a0b16':css('--sand');x.font='600 '+(n>9?22:26)+'px '+css('--f-body');
+    let t=W.pool[i].name;if(t.length>20)t=t.slice(0,19)+'…';x.fillText(t,R-26,9);x.restore()}
+  for(let i=0;i<36;i++){const a=i*Math.PI/18;x.beginPath();x.arc(R+Math.cos(a)*(R-10),R+Math.sin(a)*(R-10),4,0,7);x.fillStyle=i%2?css('--sun'):'#fff6';x.fill()}
+}
+function openWheel(){W.pool=wheelPool();W.pick=null;$('#wGo').disabled=true;$('#wRes').innerHTML='<p>Tap Spin. Whatever it lands on, that\'s tonight.</p>';drawWheelCats();drawWheel();$('#wheelModal').classList.add('open')}
+function spin(){
+  if(W.spinning)return;if(!W.pool.length)return toast('No places match — try another type');
+  W.spinning=true;$('#wGo').disabled=true;$('#wRes').innerHTML='<p>Spinning…</p>';
+  const n=W.pool.length,k=Math.floor(Math.random()*n),seg=2*Math.PI/n;
+  const final=-(k*seg+seg/2)+(Math.random()-.5)*seg*.6;
+  const start=W.angle,turns=reduce?0:6;let end=final-2*Math.PI*turns;while(end>start-2*Math.PI*turns)end-=2*Math.PI;
+  const dur=reduce?200:4200,t0=performance.now();
+  (function step(t){const u=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-u,4);W.angle=start+(end-start)*e;drawWheel();
+    if(u<1)requestAnimationFrame(step);else{W.angle=((end%(2*Math.PI))+2*Math.PI)%(2*Math.PI);W.spinning=false;const p=W.pool[k];W.pick=p;
+      $('#wRes').innerHTML=`<span class="mono" style="color:var(--mint)">Tonight</span><h3>${esc(p.name)}</h3><p>${CATS[main(p)].e} ${esc(p.tag)} · ${esc(p.hood)}${me?' · '+mi(dist(me,p))+' mi away':''}</p>`;$('#wGo').disabled=false}})(t0);
+}
+$('#wCats').onclick=e=>{const b=e.target.closest('button');if(!b||W.spinning)return;const k=b.dataset.k;if(!k)W.cats.clear();else W.cats.has(k)?W.cats.delete(k):W.cats.add(k);W.pool=wheelPool();drawWheelCats();drawWheel()};
+$('#wWant').onchange=()=>{W.pool=wheelPool();drawWheel()};
+$('#wSpin').onclick=spin;$('#wClose').onclick=()=>$('#wheelModal').classList.remove('open');
+$('#wGo').onclick=()=>{if(!W.pick)return;$('#wheelModal').classList.remove('open');goTo(W.pick.id)};
+['#spinNav','#spinHero','#randBtn'].forEach(s=>$(s).onclick=openWheel);
 
 // ---------- Edit ----------
 let fCats=new Set(['Restaurant']),fVibes=new Set(),fRate=0,extraVibes=[];
 function drawSeg(){$('#fCat').innerHTML=Object.entries(CATS).map(([k,v])=>`<button type="button" class="${fCats.has(k)?'on':''}" style="--c:var(--${k})" data-k="${k}">${v.e} ${v.label}</button>`).join('');}
 function drawVibes(){const opts=[...new Set([...DEFAULT_VIBES,...allVibes(),...extraVibes,...fVibes])];$('#fVibes').innerHTML=opts.map(v=>`<button type="button" class="${fVibes.has(v)?'on':''}" data-v="${esc(v)}">${fVibes.has(v)?'✓ ':''}${esc(v)}</button>`).join('');}
-function drawRate(){$('#fRate').innerHTML=[1,2,3,4,5].map(n=>`<button type="button" class="${n<=fRate?'on':''}" data-n="${n}">★</button>`).join('');}
+function drawRate(){$('#fRate').innerHTML=[1,2,3,4,5].map(n=>`<button type="button" class="${n<=fRate?'on':''}" data-n="${n}" aria-label="${n} stars">★</button>`).join('');}
 $('#fCat').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;if(fCats.has(k)){if(fCats.size>1)fCats.delete(k);else toast('Pick at least one type');}else fCats.add(k);drawSeg();};
 $('#fVibes').onclick=e=>{const b=e.target.closest('button');if(!b)return;const v=b.dataset.v;fVibes.has(v)?fVibes.delete(v):fVibes.add(v);drawVibes();};
 function addVibe(){const v=$('#fNewVibe').value.trim().replace(/\s+/g,' ');if(!v)return;const nice=v.charAt(0).toUpperCase()+v.slice(1);const existing=[...DEFAULT_VIBES,...allVibes(),...extraVibes].find(x=>x.toLowerCase()===nice.toLowerCase());const val=existing||nice;if(!existing)extraVibes.push(val);fVibes.add(val);$('#fNewVibe').value='';drawVibes();}
@@ -415,9 +824,9 @@ function setLocLine(){$('#locLine').textContent=draftLoc?`📍 ${draftLoc.lat.to
 window.openEdit=function(id){
   map.closePopup();
   editing=id?places.find(p=>p.id===id):null;
-  const p=editing||{name:'',cats:state.cats.size?[...state.cats]:['Restaurant'],vibes:[...state.vibes],tag:'',hood:state.hoods.size===1?[...state.hoods][0]:'',note:'',rating:0,fav:false};
+  const p=editing||{name:'',cats:state.cats.size?[...state.cats]:['Restaurant'],vibes:[...state.vibes],tag:'',hood:state.hoods.size===1?[...state.hoods][0]:'',note:'',order:'',rating:0,fav:false,want:false};
   $('#editTitle').textContent=editing?'Edit place':'Add a place';
-  $('#fName').value=p.name;$('#fTag').value=p.tag;$('#fHood').value=p.hood;$('#fNote').value=p.note||'';$('#fFav').checked=!!p.fav;
+  $('#fName').value=p.name;$('#fTag').value=p.tag;$('#fHood').value=p.hood;$('#fNote').value=p.note||'';$('#fOrder').value=p.order||'';$('#fFav').checked=!!p.fav;$('#fWant').checked=!!p.want;
   $('#fAddr').value=editing?(p.addr||p.name+' Miami'):'';$('#geoRes').innerHTML='';$('#fNewVibe').value='';
   fCats=new Set(p.cats);fVibes=new Set(p.vibes);fRate=p.rating||0;extraVibes=[];drawSeg();drawVibes();drawRate();
   draftLoc=hasLoc(p)?{lat:p.lat,lng:p.lng,label:p.status==='approx'?'approximate':'',addr:p.addr}:null;setLocLine();
@@ -443,24 +852,25 @@ async function geocode(){
       $('#geoRes').innerHTML='';setLocLine();};
   }catch(e){$('#geoRes').innerHTML='<div>Search unavailable — use “Pick on map”.</div>';}
 }
-$('#pickBtn').onclick=()=>{$('#editModal').classList.remove('open');document.body.classList.add('picking');picking=true;if(innerWidth<=760)$('#side').classList.remove('up');};
+$('#pickBtn').onclick=()=>{$('#editModal').classList.remove('open');document.body.classList.add('picking');picking=true;$('#mapapp').scrollIntoView();if(innerWidth<=760)$('#side').classList.remove('up');};
 map.on('click',e=>{if(!picking)return;picking=false;document.body.classList.remove('picking');draftLoc={lat:e.latlng.lat,lng:e.latlng.lng,label:'picked on map'};setLocLine();$('#editModal').classList.add('open');});
 $('#hereBtn').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{draftLoc={lat:pos.coords.latitude,lng:pos.coords.longitude,label:'my location'};setLocLine();},()=>toast('Couldn’t get your location'));
 $('#saveBtn').onclick=()=>{
   const name=$('#fName').value.trim();if(!name)return toast('Give it a name');
   if($('#fNewVibe').value.trim())addVibe();
   const cats=Object.keys(CATS).filter(k=>fCats.has(k));
-  const data={name,cats,vibes:[...fVibes],tag:$('#fTag').value.trim()||CATS[cats[0]].label,hood:$('#fHood').value.trim()||'Miami',note:$('#fNote').value.trim(),rating:fRate,fav:$('#fFav').checked,
+  const data={name,cats,vibes:[...fVibes],tag:$('#fTag').value.trim()||CATS[cats[0]].label,hood:$('#fHood').value.trim()||'Miami',note:$('#fNote').value.trim(),order:$('#fOrder').value.trim(),rating:fRate,fav:$('#fFav').checked,want:$('#fWant').checked,
     lat:draftLoc?+draftLoc.lat.toFixed(6):null,lng:draftLoc?+draftLoc.lng.toFixed(6):null};
+  if(!data.order)delete data.order;
   data.status=!draftLoc?'unknown':(draftLoc.label==='approximate'?'approx':'ok');
   if(draftLoc&&draftLoc.addr)data.addr=draftLoc.addr;
   if(editing)Object.assign(editing,data);
   else{let id=slug(name);while(places.some(p=>p.id===id))id+='-2';places.push({id,...data});editing={id};}
-  $('#editModal').classList.remove('open');persist();renderAll();
+  $('#editModal').classList.remove('open');persist();renderAll();buildTour();renderClosest();heroCopy();
   const p=places.find(x=>x.id===editing.id);toast(`${p.name} saved`);focus(p);
 };
 $('#delBtn').onclick=()=>{if(!editing)return;if(!$('#delBtn').dataset.sure){$('#delBtn').dataset.sure=1;$('#delBtn').textContent='Tap again';setTimeout(()=>{delete $('#delBtn').dataset.sure;$('#delBtn').textContent='Delete'},2500);return;}
-  const n=editing.name;places=places.filter(p=>p!==editing);$('#editModal').classList.remove('open');persist();state.active=null;renderAll();toast(`Removed ${n}`);};
+  const n=editing.name;places=places.filter(p=>p!==editing);$('#editModal').classList.remove('open');persist();state.active=null;renderAll();buildTour();renderClosest();heroCopy();toast(`Removed ${n}`);};
 
 // ---------- Settings ----------
 $('#settingsBtn').onclick=$('#syncBtn').onclick=()=>{$('#sOwner').value=cfg.owner;$('#sRepo').value=cfg.repo;$('#sToken').value=cfg.token;$('#setModal').classList.add('open');};
@@ -468,11 +878,12 @@ $('#setCancel').onclick=()=>$('#setModal').classList.remove('open');
 $('#setSave').onclick=async()=>{cfg={owner:$('#sOwner').value.trim(),repo:$('#sRepo').value.trim(),token:$('#sToken').value.trim()};store.set(LS+'.cfg',cfg);$('#setModal').classList.remove('open');
   if(!cfg.token)return setSync('local');
   if(store.get(LS+'.dirty',false))syncUp();
-  else{try{places=(await ghGet()).data;places.forEach(normalize);store.set(LS+'.places',places);setSync('ok');renderAll();toast('Connected to GitHub ✓');}catch(e){setSync('err');toast('Couldn’t reach repo — check details');}}
+  else{try{places=(await ghGet()).data;places.forEach(normalize);store.set(LS+'.places',places);setSync('ok');renderAll();buildTour();renderClosest();heroCopy();toast('Connected to GitHub ✓');}catch(e){setSync('err');toast('Couldn’t reach repo — check details');}}
 };
 $('#exportBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(places,null,1)],{type:'application/json'}));a.download='places.json';a.click();};
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'))});
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)map.invalidateSize()}),{threshold:.1}).observe($('#mapapp'));
 
 load();
 </script>
