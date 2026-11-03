@@ -220,6 +220,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .pc .row{display:flex;gap:6px;margin-top:8px}
 .pc .row a,.pc .row button{flex:1;text-align:center;text-decoration:none;font-size:13px;font-weight:600;padding:9px;border-radius:8px;border:0;cursor:pointer}
 .pc .row a{background:#2b5aa8;color:#fff!important}
+.pc .row{flex-wrap:wrap}.pc .row>*{min-width:30%}
+.pc .row a.rsv{background:#c2185b}
+.pc .row a.rsv.alt{background:transparent;color:#21182a!important;box-shadow:inset 0 0 0 1.5px #21182a33}
+.pc .row a.web{background:#21182a}
 .pc .row button{background:var(--c);color:#21182a}
 .pc .stars{color:#c48a1c}
 
@@ -476,6 +480,7 @@ body.mapfull .bar{display:none}
     </div>
     <datalist id="tagList"></datalist><datalist id="hoodList"></datalist>
     <div class="f"><span class="flabel">My rating</span><div class="rate" id="fRate"></div></div>
+    <div class="two"><div class="f"><label for="fBook">Reservation link</label><input id="fBook" inputmode="url" placeholder="resy.com/… or opentable.com/…"></div><div class="f"><label for="fSite">Website</label><input id="fSite" inputmode="url" placeholder="restaurant.com"></div></div>
     <div class="f"><label for="fOrder">Must order</label><input id="fOrder" placeholder="The spicy rigatoni, the carajillo…"></div>
     <div class="f"><label for="fNote">Notes</label><textarea id="fNote" rows="2" placeholder="Who you went with, when to go…"></textarea></div>
     <div class="f checks">
@@ -570,6 +575,8 @@ const slug=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[
 const main=p=>p.cats[0]||'Spot';
 const catLabel=p=>p.cats.map(c=>CATS[c]?.label.replace(/s$/,'')).join(' + ');
 function normalize(p){if(!Array.isArray(p.cats))p.cats=p.cat?[p.cat]:['Spot'];p.cats=p.cats.filter(c=>CATS[c]);if(!p.cats.length)p.cats=['Spot'];delete p.cat;if(!Array.isArray(p.vibes))p.vibes=[];p.want=!!p.want;return p}
+const safeUrl=u=>/^https?:\/\/[^\s"<>]+$/i.test(u||'')?u:'';
+const fixUrl=u=>{u=String(u||'').trim();if(!u)return'';if(!/^https?:\/\//i.test(u)&&/\./.test(u))u='https://'+u;return safeUrl(u)};
 const allVibes=()=>{const s=new Set();places.forEach(p=>p.vibes.forEach(v=>s.add(v)));return [...s].sort()};
 const rank=(a,b)=>(b.fav-a.fav)||((b.rating||0)-(a.rating||0))||a.name.localeCompare(b.name);
 
@@ -765,7 +772,7 @@ function popupHtml(p){
   ${p.note?`<div class="note">“${esc(p.note)}”</div>`:''}
   ${p.status==='approx'?'<div class="s" style="margin-top:8px;color:#9a6a12;font-size:12px">≈ Pin is approximate — Edit to fix</div>':''}
   <div class="tg owner-only"><button type="button" class="${p.fav?'on':''}" onclick="toggleFlag('${p.id}','fav')">❤️ Go again</button><button type="button" class="${p.want?'on':''}" onclick="toggleFlag('${p.id}','want')">📌 Want to go</button></div>
-  <div class="row"><a href="${g}" target="_blank" rel="noopener">Directions</a><button type="button" onclick="openEdit('${p.id}')">Edit</button></div></div>`;
+  <div class="row"><a href="${g}" target="_blank" rel="noopener">Directions</a>${safeUrl(p.book)?`<a class="rsv" href="${esc(safeUrl(p.book))}" target="_blank" rel="noopener">Reserve</a>`:(p.cats.some(c=>c==='Restaurant'||c==='Bar')?`<a class="rsv alt" href="https://www.google.com/search?q=${encodeURIComponent(p.name+' Miami reservations')}" target="_blank" rel="noopener">Find a table</a>`:'')}${safeUrl(p.site)?`<a class="web" href="${esc(safeUrl(p.site))}" target="_blank" rel="noopener">Website</a>`:''}<button type="button" onclick="openEdit('${p.id}')">Edit</button></div></div>`;
 }
 window.toggleFlag=(id,k)=>{const p=places.find(x=>x.id===id);if(!p)return;p[k]=!p[k];if(k==='fav'&&p.fav)p.want=false;if(k==='want'&&p.want)p.fav=false;persist();renderList();markers[id]&&markers[id].setPopupContent(popupHtml(p));toast(k==='fav'?(p.fav?'Added to Go again ❤️':'Removed from Go again'):(p.want?'Added to Want to go 📌':'Removed from Want to go'));};
 function renderMarkers(){
@@ -870,7 +877,7 @@ window.openEdit=function(id){
   editing=id?places.find(p=>p.id===id):null;
   const p=editing||{name:'',cats:state.cats.size?[...state.cats]:['Restaurant'],vibes:[...state.vibes],tag:'',hood:state.hoods.size===1?[...state.hoods][0]:'',note:'',order:'',rating:0,fav:false,want:false};
   $('#editTitle').textContent=editing?'Edit place':'Add a place';
-  $('#fName').value=p.name;$('#fTag').value=p.tag;$('#fHood').value=p.hood;$('#fNote').value=p.note||'';$('#fOrder').value=p.order||'';$('#fFav').checked=!!p.fav;$('#fWant').checked=!!p.want;
+  $('#fName').value=p.name;$('#fTag').value=p.tag;$('#fHood').value=p.hood;$('#fNote').value=p.note||'';$('#fOrder').value=p.order||'';$('#fBook').value=p.book||'';$('#fSite').value=p.site||'';$('#fFav').checked=!!p.fav;$('#fWant').checked=!!p.want;
   $('#fAddr').value=editing?(p.addr||p.name+' Miami'):'';$('#geoRes').innerHTML='';$('#fNewVibe').value='';
   fCats=new Set(p.cats);fVibes=new Set(p.vibes);fRate=p.rating||0;extraVibes=[];drawSeg();drawVibes();drawRate();
   draftLoc=hasLoc(p)?{lat:p.lat,lng:p.lng,label:p.status==='approx'?'approximate':'',addr:p.addr}:null;setLocLine();
@@ -903,9 +910,9 @@ $('#saveBtn').onclick=()=>{
   const name=$('#fName').value.trim();if(!name)return toast('Give it a name');
   if($('#fNewVibe').value.trim())addVibe();
   const cats=Object.keys(CATS).filter(k=>fCats.has(k));
-  const data={name,cats,vibes:[...fVibes],tag:$('#fTag').value.trim()||CATS[cats[0]].label,hood:$('#fHood').value.trim()||'Miami',note:$('#fNote').value.trim(),order:$('#fOrder').value.trim(),rating:fRate,fav:$('#fFav').checked,want:$('#fWant').checked,
+  const data={name,cats,vibes:[...fVibes],tag:$('#fTag').value.trim()||CATS[cats[0]].label,hood:$('#fHood').value.trim()||'Miami',note:$('#fNote').value.trim(),order:$('#fOrder').value.trim(),book:fixUrl($('#fBook').value),site:fixUrl($('#fSite').value),rating:fRate,fav:$('#fFav').checked,want:$('#fWant').checked,
     lat:draftLoc?+draftLoc.lat.toFixed(6):null,lng:draftLoc?+draftLoc.lng.toFixed(6):null};
-  if(!data.order)delete data.order;
+  if(!data.order)delete data.order;if(!data.book)delete data.book;if(!data.site)delete data.site;
   data.status=!draftLoc?'unknown':(draftLoc.label==='approximate'?'approx':'ok');
   if(draftLoc&&draftLoc.addr)data.addr=draftLoc.addr;
   if(editing)Object.assign(editing,data);
