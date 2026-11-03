@@ -2,7 +2,10 @@
  {
   "id": "oriental-bakery-grocery",
   "name": "Oriental Bakery & Grocery",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Middle Eastern",
   "hood": "Brickell",
   "lat": 25.760893,
@@ -15,49 +18,61 @@
  {
   "id": "blind-tiger",
   "name": "Blind Tiger",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "American",
   "hood": "Aventura",
+  "addr": "18167 Biscayne Blvd, Aventura",
   "lat": 25.943247,
   "lng": -80.147067,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "18167 Biscayne Blvd, Aventura"
+  "fav": false
  },
  {
   "id": "sereia",
   "name": "Sereia",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Seafood",
   "hood": "Coconut Grove",
+  "addr": "3540 Main Hwy, Coconut Grove",
   "lat": 25.725232,
   "lng": -80.245059,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "3540 Main Hwy, Coconut Grove"
+  "fav": false
  },
  {
   "id": "mandolin-aegean-bistro",
   "name": "Mandolin Aegean Bistro",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Greek",
   "hood": "Design District",
+  "addr": "4312 NE 2nd Ave",
   "lat": 25.815946,
   "lng": -80.191645,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "4312 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "eataly",
   "name": "Eataly Aventura",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Aventura",
   "lat": 25.956915,
@@ -70,399 +85,488 @@
  {
   "id": "1-800-lucky",
   "name": "1-800-Lucky",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Asian Food Hall",
   "hood": "Wynwood",
+  "addr": "143 NW 23rd St",
   "lat": 25.799374,
   "lng": -80.197964,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "143 NW 23rd St"
+  "fav": false
  },
  {
   "id": "upper-eastside-hangout",
   "name": "Upper Eastside Hangout",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Bar & Bites",
   "hood": "Upper Eastside",
+  "addr": "701 NE 79th St",
   "lat": 25.848059,
   "lng": -80.18241,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "701 NE 79th St"
+  "fav": false
  },
  {
   "id": "la-leggenda-pizzeria",
   "name": "La Leggenda Pizzeria",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Pizza",
   "hood": "South Beach",
+  "addr": "224 Española Way",
   "lat": 25.786782,
   "lng": -80.131304,
   "status": "ok",
   "note": "224 Española Way",
   "rating": 0,
-  "fav": false,
-  "addr": "224 Española Way"
+  "fav": false
  },
  {
   "id": "fratelli-la-bufala",
   "name": "Fratelli La Bufala",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "South Beach",
+  "addr": "437 Washington Ave",
   "lat": 25.774273,
   "lng": -80.133917,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "437 Washington Ave"
+  "fav": false
  },
  {
   "id": "route-66",
   "name": "Uptown 66",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "American",
   "hood": "Upper Eastside",
+  "addr": "6600 Biscayne Blvd",
   "lat": 25.8368,
   "lng": -80.1846,
   "status": "approx",
   "note": "Couldn’t find a Route 66 — guessed Uptown 66 (MiMo). Fix if wrong",
   "rating": 0,
-  "fav": false,
-  "addr": "6600 Biscayne Blvd"
+  "fav": false
  },
  {
   "id": "lung-yai-thai-tapas",
   "name": "Lung Yai Thai Tapas",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Thai",
   "hood": "Little Havana",
+  "addr": "1731 SW 8th St",
   "lat": 25.765724,
   "lng": -80.223267,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1731 SW 8th St"
+  "fav": false
  },
  {
   "id": "el-rey-de-las-fritas",
   "name": "El Rey de las Fritas",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Cuban",
   "hood": "Little Havana",
+  "addr": "1821 SW 8th St",
   "lat": 25.765798,
   "lng": -80.225162,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1821 SW 8th St"
+  "fav": false
  },
  {
   "id": "the-taco-stand",
   "name": "The Taco Stand",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Mexican",
   "hood": "Wynwood",
+  "addr": "313 NW 25th St",
   "lat": 25.800753,
   "lng": -80.201321,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "313 NW 25th St"
+  "fav": false
  },
  {
   "id": "doubleknot",
   "name": "Double Knot",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Japanese",
   "hood": "Wynwood",
+  "addr": "2550 NW 2nd Ave",
   "lat": 25.801265,
   "lng": -80.199319,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2550 NW 2nd Ave"
+  "fav": false
  },
  {
   "id": "pari-pari",
   "name": "Pari Pari",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Japanese",
   "hood": "Wynwood",
+  "addr": "127 NW 27th St",
   "lat": 25.80237,
   "lng": -80.197728,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "127 NW 27th St"
+  "fav": false
  },
  {
   "id": "tran-an",
   "name": "Tran An",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Vietnamese",
   "hood": "Little River",
+  "addr": "215 NE 82nd St",
   "lat": 25.850042,
   "lng": -80.19232,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "215 NE 82nd St"
+  "fav": false
  },
  {
   "id": "manolo",
   "name": "Manolo",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Churros & Sandwiches",
   "hood": "North Beach",
+  "addr": "7300 Collins Ave",
   "lat": 25.858577,
   "lng": -80.121068,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "7300 Collins Ave"
+  "fav": false
  },
  {
   "id": "osteria",
   "name": "Osteria",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Upper Eastside",
+  "addr": "8001 Biscayne Blvd",
   "lat": 25.848894,
   "lng": -80.184346,
   "status": "ok",
   "note": "Which Osteria? Set the spot",
   "rating": 0,
-  "fav": false,
-  "addr": "8001 Biscayne Blvd"
+  "fav": false
  },
  {
   "id": "otto-pepe",
   "name": "Otto & Pepe",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Wynwood",
+  "addr": "126 NW 27th St",
   "lat": 25.801996,
   "lng": -80.197627,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "126 NW 27th St"
+  "fav": false
  },
  {
   "id": "kura-revolving-sushi",
   "name": "Kura Revolving Sushi",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Japanese",
   "hood": "Aventura",
+  "addr": "Aventura",
   "lat": 25.949462,
   "lng": -80.145713,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "Aventura"
+  "fav": false
  },
  {
   "id": "katana",
   "name": "Katana",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Japanese",
   "hood": "Normandy Isle",
+  "addr": "920 71st St",
   "lat": 25.85546,
   "lng": -80.128291,
   "status": "ok",
   "note": "Floating sushi boats",
   "rating": 0,
-  "fav": false,
-  "addr": "920 71st St"
+  "fav": false
  },
  {
   "id": "t-m-t-m",
   "name": "Tâm Tâm",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Vietnamese",
   "hood": "Downtown",
+  "addr": "99 NW 1st St",
   "lat": 25.7752,
   "lng": -80.195078,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "99 NW 1st St"
+  "fav": false
  },
  {
   "id": "lira",
   "name": "Lira",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Lebanese",
   "hood": "Wynwood",
+  "addr": "2000 NW 2nd Ave",
   "lat": 25.7955,
   "lng": -80.1972,
   "status": "approx",
   "note": "Lira House, 2000 NW 2nd Ave",
   "rating": 0,
-  "fav": false,
-  "addr": "2000 NW 2nd Ave"
+  "fav": false
  },
  {
   "id": "torno-subito",
   "name": "Torno Subito",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Design District",
+  "addr": "191 NE 40th St",
   "lat": 25.813742,
   "lng": -80.191735,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "191 NE 40th St"
+  "fav": false
  },
  {
   "id": "walrus-rodeo",
   "name": "Walrus Rodeo",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "New American",
   "hood": "Buena Vista",
+  "addr": "5143 NE 2nd Ave",
   "lat": 25.823475,
   "lng": -80.191552,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "5143 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "boia-de",
   "name": "Boia De",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Buena Vista",
+  "addr": "5205 NE 2nd Ave",
   "lat": 25.824291,
   "lng": -80.191348,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "5205 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "osteria-del-teatro",
   "name": "Osteria del Teatro",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [
+   "Waterfront"
+  ],
   "tag": "Italian",
   "hood": "North Bay Village",
+  "addr": "1666 79th St Causeway, North Bay Village",
   "lat": 25.848412,
   "lng": -80.151004,
   "status": "ok",
   "note": "Now on the 79th St Causeway",
   "rating": 0,
-  "fav": false,
-  "addr": "1666 79th St Causeway, North Bay Village"
+  "fav": false
  },
  {
   "id": "la-casetta",
   "name": "Casetta Pizzeria",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Pizza",
   "hood": "Little Havana",
+  "addr": "502 SW 12th Ave",
   "lat": 25.768525,
   "lng": -80.214768,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "502 SW 12th Ave"
+  "fav": false
  },
  {
   "id": "taquiza",
   "name": "Taquiza",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Mexican",
   "hood": "South Beach",
+  "addr": "South Beach",
   "lat": 25.785017,
   "lng": -80.130735,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "South Beach"
+  "fav": false
  },
  {
   "id": "pho-nam",
   "name": "Pho Nam",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Vietnamese",
   "hood": "Downtown",
+  "addr": "270 E Flagler St",
   "lat": 25.774127,
   "lng": -80.189189,
   "status": "ok",
   "note": "From the Tâm Tâm team",
   "rating": 0,
-  "fav": false,
-  "addr": "270 E Flagler St"
+  "fav": false
  },
  {
   "id": "bar-fideo",
   "name": "Bar Fideo",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Spanish",
   "hood": "Little River",
+  "addr": "8291 NE 2nd Ave",
   "lat": 25.851469,
   "lng": -80.192728,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "8291 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "teo-teo",
   "name": "Teo Teo",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Restaurant",
   "hood": "Upper Eastside",
+  "addr": "7285 Biscayne Blvd",
   "lat": 25.842129,
   "lng": -80.184063,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "7285 Biscayne Blvd"
+  "fav": false
  },
  {
   "id": "ophelia",
   "name": "Ophelia",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Café",
   "hood": "Coconut Grove",
+  "addr": "2140 S Dixie Hwy",
   "lat": 25.742921,
   "lng": -80.228847,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2140 S Dixie Hwy"
+  "fav": false
  },
  {
   "id": "caracas-bakery",
   "name": "Caracas Bakery",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Venezuelan",
   "hood": "Midtown",
   "lat": 25.799518,
@@ -475,231 +579,292 @@
  {
   "id": "buccan",
   "name": "Buccan",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "American",
   "hood": "Coral Gables",
+  "addr": "100 Miracle Mile",
   "lat": 25.749381,
   "lng": -80.256961,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "100 Miracle Mile"
+  "fav": false
  },
  {
   "id": "la-sponda",
   "name": "La Sponda",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [
+   "Waterfront"
+  ],
   "tag": "Italian",
   "hood": "Coconut Grove",
+  "addr": "4 Grove Isle Dr",
   "lat": 25.736845,
   "lng": -80.217474,
   "status": "ok",
   "note": "Grove Isle",
   "rating": 0,
-  "fav": false,
-  "addr": "4 Grove Isle Dr"
+  "fav": false
  },
  {
   "id": "da-angelino",
   "name": "Da Angelino",
-  "cat": "Restaurant",
+  "cats": [
+   "Restaurant"
+  ],
+  "vibes": [],
   "tag": "Italian",
   "hood": "Coconut Grove",
+  "addr": "3015 Grand Ave",
   "lat": 25.7281,
   "lng": -80.2412,
   "status": "approx",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "3015 Grand Ave"
+  "fav": false
  },
  {
   "id": "lagniappe",
   "name": "Lagniappe",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [
+   "Live music",
+   "Outdoor seating"
+  ],
   "tag": "Wine & Live Music",
   "hood": "Edgewater",
+  "addr": "3425 NE 2nd Ave",
   "lat": 25.809071,
   "lng": -80.190986,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "3425 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "medium-cool",
   "name": "Medium Cool",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Cocktails",
   "hood": "South Beach",
+  "addr": "1690 Collins Ave",
   "lat": 25.792171,
   "lng": -80.130079,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1690 Collins Ave"
+  "fav": false
  },
  {
   "id": "mangrove",
   "name": "Mangrove",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Cocktails",
   "hood": "Downtown",
+  "addr": "103 NW 1st Ave",
   "lat": 25.775284,
   "lng": -80.195071,
   "status": "ok",
   "note": "Jamaican speakeasy",
   "rating": 0,
-  "fav": false,
-  "addr": "103 NW 1st Ave"
+  "fav": false
  },
  {
   "id": "boho-house",
   "name": "Boho House",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Lounge",
   "hood": "Wynwood",
+  "addr": "85 NW 25th St",
   "lat": 25.801017,
   "lng": -80.196809,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "85 NW 25th St"
+  "fav": false
  },
  {
   "id": "viceversa",
   "name": "ViceVersa",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Cocktails",
   "hood": "Downtown",
+  "addr": "398 NE 5th St",
   "lat": 25.77888,
   "lng": -80.189056,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "398 NE 5th St"
+  "fav": false
  },
  {
   "id": "mad-radio",
   "name": "Mad Radio",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Listening Bar",
   "hood": "Upper Eastside",
+  "addr": "7700 Biscayne Blvd",
   "lat": 25.846203,
   "lng": -80.185133,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "7700 Biscayne Blvd"
+  "fav": false
  },
  {
   "id": "the-corner",
   "name": "The Corner",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Dive",
   "hood": "Downtown",
+  "addr": "1035 N Miami Ave",
   "lat": 25.784516,
   "lng": -80.193827,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1035 N Miami Ave"
+  "fav": false
  },
  {
   "id": "lost-city-brewing",
   "name": "Lost City Brewing",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Brewery",
   "hood": "North Miami",
+  "addr": "12207 NE 13th Ct, North Miami",
   "lat": 25.888405,
   "lng": -80.170837,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "12207 NE 13th Ct, North Miami"
+  "fav": false
  },
  {
   "id": "la-tropical",
   "name": "La Tropical",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Brewery",
   "hood": "Wynwood",
+  "addr": "42 NE 25th St",
   "lat": 25.80045,
   "lng": -80.193926,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "42 NE 25th St"
+  "fav": false
  },
  {
   "id": "mezcaler-a",
   "name": "La Yolanda Mezcalería",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Mezcal",
   "hood": "Little River",
+  "addr": "205 NE 82nd St",
   "lat": 25.849985,
   "lng": -80.192645,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "205 NE 82nd St"
+  "fav": false
  },
  {
   "id": "sottovoce",
   "name": "SottoVoce",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Wine Bar",
   "hood": "Edgewater",
+  "addr": "2830 NE 2nd Ave",
   "lat": 25.803801,
   "lng": -80.191362,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2830 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "yamashiro",
   "name": "Yamashiro",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [
+   "Rooftop"
+  ],
   "tag": "Rooftop",
   "hood": "Downtown",
+  "addr": "159 NE 6th St",
   "lat": 25.780228,
   "lng": -80.191078,
   "status": "ok",
   "note": "Gale Hotel rooftop",
   "rating": 0,
-  "fav": false,
-  "addr": "159 NE 6th St"
+  "fav": false
  },
  {
   "id": "fuku",
   "name": "Fuku",
-  "cat": "Bar",
+  "cats": [
+   "Bar"
+  ],
+  "vibes": [],
   "tag": "Fried Chicken",
   "hood": "Coral Gables",
+  "addr": "135 Miracle Mile",
   "lat": 25.749949,
   "lng": -80.257452,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "135 Miracle Mile"
+  "fav": false
  },
  {
   "id": "south-pointe-park",
   "name": "South Pointe Park",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [
+   "Waterfront",
+   "Sunset"
+  ],
   "tag": "Park",
   "hood": "South Beach",
   "lat": 25.768,
@@ -712,35 +877,47 @@
  {
   "id": "ross-kramer-gallery",
   "name": "Ross+Kramer Gallery",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [],
   "tag": "Art Gallery",
   "hood": "Sunset Harbour",
+  "addr": "1910 Alton Rd",
   "lat": 25.794995,
   "lng": -80.141659,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1910 Alton Rd"
+  "fav": false
  },
  {
   "id": "upper-buena-vista",
   "name": "Upper Buena Vista",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [],
   "tag": "Shops & Food",
   "hood": "Buena Vista",
+  "addr": "5040 NE 2nd Ave",
   "lat": 25.821896,
   "lng": -80.191909,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "5040 NE 2nd Ave"
+  "fav": false
  },
  {
   "id": "venetian-dr-sunset",
   "name": "Venetian Dr Sunset",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [
+   "Waterfront",
+   "Sunset"
+  ],
   "tag": "Sunset",
   "hood": "Venetian Islands",
   "lat": 25.79,
@@ -753,7 +930,10 @@
  {
   "id": "hollywood-farmers-market",
   "name": "Hollywood Farmers Market",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [],
   "tag": "Market",
   "hood": "Hollywood",
   "lat": 26.0115,
@@ -766,21 +946,29 @@
  {
   "id": "8-s-market",
   "name": "8's Market",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [],
   "tag": "Market",
   "hood": "Edgewater",
+  "addr": "2699 Biscayne Blvd",
   "lat": 25.802693,
   "lng": -80.188792,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2699 Biscayne Blvd"
+  "fav": false
  },
  {
   "id": "hobie-island",
   "name": "Hobie Island",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [
+   "Waterfront"
+  ],
   "tag": "Beach",
   "hood": "Key Biscayne Causeway",
   "lat": 25.745574,
@@ -793,71 +981,88 @@
  {
   "id": "panther-coffee",
   "name": "Panther Coffee",
-  "cat": "Coffee",
+  "cats": [
+   "Coffee"
+  ],
+  "vibes": [],
   "tag": "Coffee",
   "hood": "Wynwood",
+  "addr": "2390 NW 2nd Ave",
   "lat": 25.799883,
   "lng": -80.199296,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2390 NW 2nd Ave"
+  "fav": false
  },
  {
   "id": "caf-du-bey",
   "name": "Café Du Bey",
-  "cat": "Coffee",
+  "cats": [
+   "Coffee"
+  ],
+  "vibes": [],
   "tag": "Coffee",
   "hood": "Sunset Harbour",
+  "addr": "1330 18th St",
   "lat": 25.793312,
   "lng": -80.143254,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "1330 18th St"
+  "fav": false
  },
  {
   "id": "the-standard-spa",
   "name": "The Standard Spa",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [
+   "Waterfront"
+  ],
   "tag": "Spa",
   "hood": "Belle Isle",
+  "addr": "40 Island Ave",
   "lat": 25.79175,
   "lng": -80.149086,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "40 Island Ave"
+  "fav": false
  },
  {
   "id": "suite-habana-caf",
   "name": "Suite Habana Café",
-  "cat": "Coffee",
+  "cats": [
+   "Coffee"
+  ],
+  "vibes": [],
   "tag": "Coffee",
   "hood": "South Beach",
+  "addr": "1670 James Ave",
   "lat": 25.791509,
   "lng": -80.131085,
   "status": "ok",
   "note": "Now at 1670 James Ave",
   "rating": 0,
-  "fav": false,
-  "addr": "1670 James Ave"
+  "fav": false
  },
  {
   "id": "casa-rassi",
   "name": "Casa Rassi",
-  "cat": "Spot",
+  "cats": [
+   "Spot"
+  ],
+  "vibes": [],
   "tag": "Spot",
   "hood": "South Beach",
+  "addr": "2216 Park Ave",
   "lat": 25.798689,
   "lng": -80.130451,
   "status": "ok",
   "note": "",
   "rating": 0,
-  "fav": false,
-  "addr": "2216 Park Ave"
+  "fav": false
  }
 ]
