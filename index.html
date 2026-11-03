@@ -285,6 +285,18 @@ footer{padding-block:48px calc(36px + env(safe-area-inset-bottom,0px));border-to
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
 footer .big{font-family:var(--f-display);font-size:clamp(48px,10vw,130px);line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(255,127,176,.45)}
 
+/* Map feel: full-screen mode, tap cover on phones, draggable sheet, smaller pins when zoomed out */
+#mapapp.full{position:fixed;inset:0;z-index:1000;height:100%;border:0;padding-top:env(safe-area-inset-top,0px)}
+body.mapfull{overflow:hidden}
+body.mapfull .bar{display:none}
+.mapclose{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:700;display:none;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:10px 16px;border-radius:99px;border:1px solid var(--line);background:rgba(10,15,36,.88);color:var(--sand);cursor:pointer}
+#mapapp.full .mapclose{display:block}
+.mapcover{position:absolute;inset:0;z-index:650;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(10,15,36,0) 30%,rgba(10,15,36,.6));cursor:pointer;border:0;width:100%;padding:0}
+.mapcover span{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:15px 22px;border-radius:99px;background:var(--flamingo);color:var(--accent-ink);font-weight:500;box-shadow:0 12px 30px -8px #000}
+@media (max-width:760px){#mapapp:not(.full) .mapcover{display:flex}#mapapp:not(.full) .fabs{display:none}.handlezone{padding:8px 0 6px;touch-action:none}.handle{width:56px;height:6px}}
+#map.far .pin{transform:rotate(-45deg) scale(.62)}
+#map.far .pin.big{transform:rotate(-45deg) scale(1)}
+.leaflet-touch .leaflet-control-zoom a{width:40px;height:40px;line-height:40px}
 /* Limelight runs wide: keep display type inside its column */
 .chapters .h2{font-size:clamp(38px,4.4vw,68px)}
 .ch h3{font-size:clamp(40px,4.8vw,78px);overflow-wrap:break-word}
@@ -410,9 +422,12 @@ footer .big{font-family:var(--f-display);font-size:clamp(48px,10vw,130px);line-h
         <div id="list"></div>
       </aside>
       <div id="map"></div>
-      <div class="wheelhint" id="wheelhint">Click the map to zoom with scroll</div>
+      <div class="wheelhint" id="wheelhint">Click the map to zoom with scroll · ⛶ for full screen</div>
+      <button class="mapclose" id="mapClose" type="button">✕ Back to page</button>
+      <button class="mapcover" id="mapCover" type="button" aria-label="Open the map full screen"><span>Tap to explore the map</span></button>
       <div class="fabs">
         <button class="fab" id="randBtn" title="Spin for tonight" aria-label="Spin for tonight">🎡</button>
+        <button class="fab" id="fullBtn" title="Full screen map" aria-label="Full screen map">⛶</button>
         <button class="fab" id="locBtn" title="Where am I" aria-label="Where am I">🧭</button>
         <button class="fab main" id="addBtn" title="Add place" aria-label="Add place">+</button>
       </div>
@@ -519,7 +534,7 @@ let cfg=store.get(LS+'.cfg',{owner:'',repo:'',token:''});
 if(!cfg.owner && location.hostname.endsWith('github.io')){cfg.owner=location.hostname.split('.')[0];cfg.repo=location.pathname.split('/').filter(Boolean)[0]||(cfg.owner+'.github.io');}
 
 const TILE='https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const map=L.map('map',{zoomControl:false,scrollWheelZoom:false}).setView([25.80,-80.19],12);
+const map=L.map('map',{zoomControl:false,scrollWheelZoom:false,zoomSnap:.5,zoomDelta:.5,wheelPxPerZoomLevel:90,tapTolerance:20,inertiaDeceleration:2600}).setView([25.80,-80.19],12);
 L.control.zoom({position:'topright'}).addTo(map);
 L.tileLayer(TILE,{maxZoom:19,attribution:'&copy; OpenStreetMap contributors',className:'darktiles'}).addTo(map);
 map.on('click focus',()=>{map.scrollWheelZoom.enable();$('#wheelhint').style.opacity=0});
@@ -756,6 +771,7 @@ function focus(p){
   if(innerWidth<=760)$('#side').classList.remove('up');
 }
 function goTo(id){const p=places.find(x=>x.id===id);if(!p)return;if(!matches(p)){state.cats.clear();state.vibes.clear();state.hoods.clear();state.q='';$('#q').value='';state.extra='all';$('#extra').value='all';renderAll();}
+  if(innerWidth<=760){setFull(true);setTimeout(()=>focus(p),150);return;}
   $('#mapapp').scrollIntoView({behavior:reduce?'auto':'smooth'});setTimeout(()=>{map.invalidateSize();focus(p)},reduce?50:700);}
 
 // ---------- Events ----------
@@ -767,7 +783,7 @@ $('#q').onfocus=()=>{if(innerWidth<=760)$('#side').classList.add('up')};
 $('#sort').onchange=e=>{state.sort=e.target.value;if(state.sort==='near'&&!me)locate(true);else renderList();};
 $('#extra').onchange=e=>{state.extra=e.target.value;renderAll();fitAll();};
 $('#list').onclick=e=>{const c=e.target.closest('.card');if(c)focus(places.find(p=>p.id===c.dataset.id));};
-$('#handlezone').onclick=()=>$('#side').classList.toggle('up');
+$('#handlezone').onclick=()=>{if(Date.now()-(+$('#handlezone').dataset.t||0)<600)return;$('#side').classList.toggle('up')};
 $('#locBtn').onclick=()=>locate(false);
 function locate(sortAfter,fromNear){
   if(!navigator.geolocation)return toast('Location not available');
@@ -859,7 +875,7 @@ async function geocode(){
       $('#geoRes').innerHTML='';setLocLine();};
   }catch(e){$('#geoRes').innerHTML='<div>Search unavailable — use “Pick on map”.</div>';}
 }
-$('#pickBtn').onclick=()=>{$('#editModal').classList.remove('open');document.body.classList.add('picking');picking=true;$('#mapapp').scrollIntoView();if(innerWidth<=760)$('#side').classList.remove('up');};
+$('#pickBtn').onclick=()=>{$('#editModal').classList.remove('open');document.body.classList.add('picking');picking=true;$('#mapapp').scrollIntoView();if(innerWidth<=760)setFull(true);if(innerWidth<=760)$('#side').classList.remove('up');};
 map.on('click',e=>{if(!picking)return;picking=false;document.body.classList.remove('picking');draftLoc={lat:e.latlng.lat,lng:e.latlng.lng,label:'picked on map'};setLocLine();$('#editModal').classList.add('open');});
 $('#hereBtn').onclick=()=>navigator.geolocation?.getCurrentPosition(pos=>{draftLoc={lat:pos.coords.latitude,lng:pos.coords.longitude,label:'my location'};setLocLine();},()=>toast('Couldn’t get your location'));
 $('#saveBtn').onclick=()=>{
@@ -890,6 +906,16 @@ $('#setSave').onclick=async()=>{cfg={owner:$('#sOwner').value.trim(),repo:$('#sR
 $('#exportBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(places,null,1)],{type:'application/json'}));a.download='places.json';a.click();};
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'))});
+// ---------- Map feel ----------
+function setFull(on){$('#mapapp').classList.toggle('full',on);document.body.classList.toggle('mapfull',on);if(on){map.scrollWheelZoom.enable();$('#wheelhint').style.opacity=0}else map.scrollWheelZoom.disable();$('#fullBtn').textContent=on?'✕':'⛶';setTimeout(()=>map.invalidateSize(),80);}
+$('#mapCover').onclick=()=>setFull(true);$('#mapClose').onclick=()=>setFull(false);$('#fullBtn').onclick=()=>setFull(!$('#mapapp').classList.contains('full'));
+document.querySelectorAll('a[href="#mapapp"]').forEach(a=>a.addEventListener('click',e=>{if(innerWidth<=760){e.preventDefault();setFull(true)}}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#mapapp').classList.contains('full')&&!document.querySelector('.modal.open'))setFull(false)});
+map.on('zoomend',()=>$('#map').classList.toggle('far',map.getZoom()<13));$('#map').classList.toggle('far',map.getZoom()<13);
+(()=>{const side=$('#side'),hz=$('#handlezone');let y0=null,base=0,max=0;
+  hz.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;max=side.offsetHeight-168;base=side.classList.contains('up')?0:max;side.style.transition='none'},{passive:true});
+  hz.addEventListener('touchmove',e=>{if(y0==null)return;const v=Math.max(0,Math.min(max,base+e.touches[0].clientY-y0));side.style.transform='translateY('+v+'px)'},{passive:true});
+  hz.addEventListener('touchend',e=>{if(y0==null)return;const dy=e.changedTouches[0].clientY-y0;side.style.transition='';side.style.transform='';hz.dataset.t=Date.now();if(Math.abs(dy)<8)side.classList.toggle('up');else side.classList.toggle('up',dy<0);y0=null});})();
 new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)map.invalidateSize()}),{threshold:.1}).observe($('#mapapp'));
 
 load();
