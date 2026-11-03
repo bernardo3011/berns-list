@@ -38,7 +38,8 @@
   "note": "",
   "rating": 0,
   "fav": false,
-  "addr": "3540 Main Hwy, Coconut Grove"
+  "addr": "3540 Main Hwy, Coconut Grove",
+  "book": "https://www.opentable.com/r/sereia-miami"
  },
  {
   "id": "mandolin-aegean-bistro",
@@ -52,7 +53,8 @@
   "note": "",
   "rating": 0,
   "fav": false,
-  "addr": "4312 NE 2nd Ave"
+  "addr": "4312 NE 2nd Ave",
+  "site": "https://mandolinrestaurant.com/location/mandolin-aegean-bistro"
  },
  {
   "id": "eataly",
@@ -900,7 +902,7 @@
   "lat": 25.848705,
   "lng": -80.192947,
   "status": "approx",
-  "note": "Big-night dinner, then drinks and dancing",
+  "note": "Big-night dinner, then drinks and dancing (moved to Little River, Jan 2026)",
   "rating": 0,
   "fav": false,
   "want": true
@@ -913,13 +915,15 @@
   ],
   "tag": "Pizza",
   "hood": "Little River",
-  "lat": 25.842015,
-  "lng": -80.189658,
-  "status": "approx",
+  "lat": 25.841422,
+  "lng": -80.196882,
+  "status": "ok",
   "note": "Reggae Sundays on the patio",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://barbucce.com/",
+  "addr": "7220 N Miami Ave"
  },
  {
   "id": "double-luck",
@@ -945,13 +949,16 @@
   ],
   "tag": "Mediterranean",
   "hood": "Buena Vista",
-  "lat": 25.816318,
-  "lng": -80.194941,
-  "status": "approx",
+  "lat": 25.817736,
+  "lng": -80.19172,
+  "status": "ok",
   "note": "Live jazz around 8:30",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://resy.com/cities/miami-fl/venues/jass-kitchen",
+  "site": "https://www.jasskitchenmiami.com/",
+  "addr": "190 NE 46th St"
  },
  {
   "id": "palma",
@@ -977,13 +984,15 @@
   ],
   "tag": "American",
   "hood": "Coral Way",
-  "lat": 25.753868,
-  "lng": -80.246018,
-  "status": "approx",
+  "lat": 25.749345,
+  "lng": -80.246573,
+  "status": "ok",
   "note": "Eight-dish menu that keeps changing",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://resy.com/cities/miami-fl/venues/to-be-determined",
+  "addr": "2240 SW 32nd Ave"
  },
  {
   "id": "barra-callao",
@@ -993,13 +1002,15 @@
   ],
   "tag": "Peruvian",
   "hood": "North Miami Beach",
-  "lat": 25.929462,
-  "lng": -80.163866,
-  "status": "approx",
+  "lat": 25.93273,
+  "lng": -80.153318,
+  "status": "ok",
   "note": "Casual counter, great ceviche",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://barracallao.com/",
+  "addr": "17034 W Dixie Hwy"
  },
  {
   "id": "cafe-la-trova",
@@ -1015,7 +1026,10 @@
   "note": "Live music and daiquiris",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://www.opentable.com/r/cafe-la-trova-miami",
+  "site": "https://www.cafelatrova.com",
+  "addr": "971 SW 8th St"
  },
  {
   "id": "boteco",
@@ -1031,7 +1045,9 @@
   "note": "Weekend live band, patio dance floor",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://www.botecomiami.com",
+  "addr": "916 NE 79th St"
  },
  {
   "id": "le-bouchon-du-grove",
@@ -1041,13 +1057,16 @@
   ],
   "tag": "French",
   "hood": "Coconut Grove",
-  "lat": 25.724362,
-  "lng": -80.239338,
-  "status": "approx",
+  "lat": 25.727677,
+  "lng": -80.242925,
+  "status": "ok",
   "note": "Lively French bistro",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://resy.com/cities/miami-fl/venues/le-bouchon-du-grove",
+  "site": "https://www.lebouchondugrove.net/",
+  "addr": "3430 Main Hwy"
  },
  {
   "id": "el-carajo",
@@ -1073,13 +1092,16 @@
   ],
   "tag": "Natural wine",
   "hood": "Coconut Grove",
-  "lat": 25.726032,
-  "lng": -80.244482,
-  "status": "approx",
+  "lat": 25.727207,
+  "lng": -80.24308,
+  "status": "ok",
   "note": "Small plates and natural wine",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://www.opentable.com/r/krus-kitchen-miami",
+  "site": "https://www.kruskitchen.com/",
+  "addr": "3413 Main Hwy"
  },
  {
   "id": "the-joyce",
@@ -1089,13 +1111,16 @@
   ],
   "tag": "Steakhouse",
   "hood": "South Beach",
-  "lat": 25.781095,
-  "lng": -80.130104,
-  "status": "approx",
+  "lat": 25.786831,
+  "lng": -80.132357,
+  "status": "ok",
   "note": "Tiny splurge steakhouse",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://book.dorsia.com/restaurant/736/booking",
+  "site": "https://www.thejoycerestaurant.com/",
+  "addr": "448 Espanola Way"
  },
  {
   "id": "ted-s-burgers",
@@ -1105,13 +1130,14 @@
   ],
   "tag": "Burgers",
   "hood": "Wynwood",
-  "lat": 25.804301,
-  "lng": -80.201259,
-  "status": "approx",
+  "lat": 25.800752,
+  "lng": -80.201358,
+  "status": "ok",
   "note": "Cult pop-up, now a real shop",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "addr": "315 NW 25th St"
  },
  {
   "id": "tin-tin",
@@ -1143,7 +1169,9 @@
   "note": "Live cumbia and DJs, tacos out front",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://zeyzeymiami.com/",
+  "addr": "353 NE 61st St"
  },
  {
   "id": "kaiju",
@@ -1153,13 +1181,14 @@
   ],
   "tag": "Cocktails",
   "hood": "Little River",
-  "lat": 25.851939,
-  "lng": -80.193241,
+  "lat": 25.852311,
+  "lng": -80.193063,
   "status": "ok",
   "note": "Anime-themed cocktails inside The Citadel",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "addr": "8300 NE 2nd Ave (inside The Citadel)"
  },
  {
   "id": "dante-s-hifi",
@@ -1169,13 +1198,16 @@
   ],
   "tag": "Listening bar",
   "hood": "Wynwood",
-  "lat": 25.798133,
-  "lng": -80.196211,
-  "status": "approx",
+  "lat": 25.801136,
+  "lng": -80.203715,
+  "status": "ok",
   "note": "Serious sound system, great records",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://www.exploretock.com/danteshifi",
+  "site": "https://danteshifi.com/",
+  "addr": "519 NW 26th St"
  },
  {
   "id": "panamericano",
@@ -1201,13 +1233,15 @@
   ],
   "tag": "Seafood lounge",
   "hood": "Brickell",
-  "lat": 25.757975,
-  "lng": -80.195618,
-  "status": "approx",
+  "lat": 25.764757,
+  "lng": -80.189426,
+  "status": "ok",
   "note": "Dinner, live band and dancing",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://www.sunkissedbrickell.com/",
+  "addr": "801 Brickell Bay Dr"
  },
  {
   "id": "la-poubelle",
@@ -1223,7 +1257,9 @@
   "note": "Cabaret dinner shows",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://www.instagram.com/lapoubelle_theatre/",
+  "addr": "1207 Maimonides St"
  },
  {
   "id": "over-under",
@@ -1233,13 +1269,16 @@
   ],
   "tag": "Bar food",
   "hood": "Downtown",
-  "lat": 25.777349,
-  "lng": -80.194238,
-  "status": "approx",
+  "lat": 25.774297,
+  "lng": -80.191089,
+  "status": "ok",
   "note": "Loud bar, Florida-style bar food",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "book": "https://www.sevenrooms.com/explore/overunder/reservations/create/search/",
+  "site": "http://overundermiami.com/",
+  "addr": "151 E Flagler St"
  },
  {
   "id": "mac-s-club-deuce",
@@ -1255,7 +1294,9 @@
   "note": "Classic cash-only dive",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "http://www.macsclubdeuce.com",
+  "addr": "222 14th St"
  },
  {
   "id": "brother-s-keeper",
@@ -1265,13 +1306,15 @@
   ],
   "tag": "Cocktails",
   "hood": "South Beach",
-  "lat": 25.785427,
-  "lng": -80.131937,
-  "status": "approx",
+  "lat": 25.792375,
+  "lng": -80.141451,
+  "status": "ok",
   "note": "'80s rock and neon",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://www.brotherskeeperbar.com/",
+  "addr": "1710 Alton Rd"
  },
  {
   "id": "mae-s-room",
@@ -1281,13 +1324,14 @@
   ],
   "tag": "Cocktails",
   "hood": "Coconut Grove",
-  "lat": 25.72687,
-  "lng": -80.244837,
-  "status": "approx",
+  "lat": 25.727286,
+  "lng": -80.243575,
+  "status": "ok",
   "note": "Small cocktail room, $9 happy hour",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "addr": "3444 Main Hwy"
  },
  {
   "id": "no-seasons",
@@ -1319,7 +1363,9 @@
   "note": "Best bay-view bar, in Bill Baggs park",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://lighthouserestaurants.com/the-cleat",
+  "addr": "1200 Crandon Blvd (Bill Baggs State Park)"
  },
  {
   "id": "sipsip",
@@ -1335,7 +1381,9 @@
   "note": "Rooftop with a slice of the bay",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "https://www.mayfairhousemiami.com",
+  "addr": "3000 Florida Ave"
  },
  {
   "id": "level-6-by-amal",
@@ -1367,7 +1415,9 @@
   "note": "Food hall with a sunset rooftop",
   "rating": 0,
   "fav": false,
-  "want": true
+  "want": true,
+  "site": "http://thecitadelmiami.com",
+  "addr": "8300 NE 2nd Ave"
  },
  {
   "id": "motek",
