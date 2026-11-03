@@ -285,6 +285,8 @@ footer{padding-block:48px calc(36px + env(safe-area-inset-bottom,0px));border-to
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
 footer .big{font-family:var(--f-display);font-size:clamp(48px,10vw,130px);line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(255,127,176,.45)}
 
+/* Visitors: read-only, suggest instead of edit */
+body:not(.owner) .owner-only,body:not(.owner) .pc .row button{display:none!important}
 /* Map feel: full-screen mode, tap cover on phones, draggable sheet, smaller pins when zoomed out */
 #mapapp.full{position:fixed;inset:0;z-index:1000;height:100%;border:0;padding-top:env(safe-area-inset-top,0px)}
 body.mapfull{overflow:hidden}
@@ -392,7 +394,7 @@ body.mapfull .bar{display:none}
           <div class="brand">
             <div><h2>The Map</h2><div class="sub" id="sub">Miami, my way</div></div>
             <div style="display:flex;gap:8px;align-items:center">
-              <button class="sync" id="syncBtn" title="GitHub sync">local</button>
+              <button class="sync owner-only" id="syncBtn" title="GitHub sync">local</button>
               <button class="iconbtn" id="settingsBtn" title="Settings" aria-label="Settings">⚙️</button>
             </div>
           </div>
@@ -498,6 +500,25 @@ body.mapfull .bar{display:none}
   </div>
 </div>
 
+<div class="modal" id="sugModal">
+  <div class="sheet">
+    <h2>Suggest a spot</h2>
+    <p style="color:var(--muted);font-size:13.5px;margin-top:-4px">Know a place Bern should try? Send it over. He reviews every suggestion before it goes on the map.</p>
+    <div class="f"><label for="gName">Place name</label><input id="gName" placeholder="e.g. Boia De" autocomplete="off"></div>
+    <div class="f"><span class="flabel">Type</span><div class="seg" id="gCat"></div></div>
+    <div class="two">
+      <div class="f"><label for="gHood">Neighborhood</label><input id="gHood" placeholder="Wynwood" list="hoodList"></div>
+      <div class="f"><label for="gWho">Your name (optional)</label><input id="gWho" placeholder="Ana"></div>
+    </div>
+    <div class="f"><label for="gWhy">Why go?</label><textarea id="gWhy" rows="2" placeholder="What to order, the vibe…"></textarea></div>
+    <div class="locline" id="gMsg" role="status" style="color:var(--sun)"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn" id="gCancel" type="button">Cancel</button>
+      <button class="btn pri" id="gSend" type="button">Send suggestion</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="setModal">
   <div class="sheet">
     <h2>Sync with GitHub</h2>
@@ -555,7 +576,7 @@ const rank=(a,b)=>(b.fav-a.fav)||((b.rating||0)-(a.rating||0))||a.name.localeCom
 // ---------- Data ----------
 async function load(){
   const local=store.get(LS+'.places',null), dirty=store.get(LS+'.dirty',false);
-  if(local&&dirty){places=local;setSync('dirty');}
+  if(local&&dirty&&cfg.token){places=local;setSync('dirty');}
   else{
     let remote=null;
     if(cfg.token&&cfg.owner&&cfg.repo){try{remote=(await ghGet()).data}catch(e){}}
@@ -565,7 +586,7 @@ async function load(){
     setSync(cfg.token?'ok':'local');
   }
   places.forEach(normalize);
-  renderAll();fitAll();buildTour();renderClosest();heroCopy();
+  renderAll();fitAll();buildTour();renderClosest();heroCopy();applyRole();checkAddLink();
 }
 function persist(){store.set(LS+'.places',places);store.set(LS+'.dirty',true);setSync('dirty');if(cfg.token)syncUp();}
 function setSync(s){const b=$('#syncBtn');b.className='sync '+(s==='ok'?'ok':s==='dirty'?'dirty':'');b.textContent=s==='ok'?'✓ synced':s==='dirty'?(cfg.token?'syncing…':'● unsaved'):s==='err'?'⚠ retry sync':'local';}
@@ -743,7 +764,7 @@ function popupHtml(p){
   ${p.order?`<div class="note"><b style="font-style:normal">Must order:</b> ${esc(p.order)}</div>`:''}
   ${p.note?`<div class="note">“${esc(p.note)}”</div>`:''}
   ${p.status==='approx'?'<div class="s" style="margin-top:8px;color:#9a6a12;font-size:12px">≈ Pin is approximate — Edit to fix</div>':''}
-  <div class="tg"><button type="button" class="${p.fav?'on':''}" onclick="toggleFlag('${p.id}','fav')">❤️ Go again</button><button type="button" class="${p.want?'on':''}" onclick="toggleFlag('${p.id}','want')">📌 Want to go</button></div>
+  <div class="tg owner-only"><button type="button" class="${p.fav?'on':''}" onclick="toggleFlag('${p.id}','fav')">❤️ Go again</button><button type="button" class="${p.want?'on':''}" onclick="toggleFlag('${p.id}','want')">📌 Want to go</button></div>
   <div class="row"><a href="${g}" target="_blank" rel="noopener">Directions</a><button type="button" onclick="openEdit('${p.id}')">Edit</button></div></div>`;
 }
 window.toggleFlag=(id,k)=>{const p=places.find(x=>x.id===id);if(!p)return;p[k]=!p[k];if(k==='fav'&&p.fav)p.want=false;if(k==='want'&&p.want)p.fav=false;persist();renderList();markers[id]&&markers[id].setPopupContent(popupHtml(p));toast(k==='fav'?(p.fav?'Added to Go again ❤️':'Removed from Go again'):(p.want?'Added to Want to go 📌':'Removed from Want to go'));};
@@ -857,7 +878,7 @@ window.openEdit=function(id){
   $('#editModal').classList.add('open');
   if(!editing)setTimeout(()=>$('#fName').focus(),50);
 };
-$('#addBtn').onclick=()=>openEdit(null);
+$('#addBtn').onclick=()=>isOwner()?openEdit(null):openSuggest();
 $('#cancelBtn').onclick=()=>$('#editModal').classList.remove('open');
 $('#geoBtn').onclick=geocode;
 $('#fAddr').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();geocode();}};
@@ -899,13 +920,50 @@ $('#delBtn').onclick=()=>{if(!editing)return;if(!$('#delBtn').dataset.sure){$('#
 $('#settingsBtn').onclick=$('#syncBtn').onclick=()=>{$('#sOwner').value=cfg.owner;$('#sRepo').value=cfg.repo;$('#sToken').value=cfg.token;$('#setModal').classList.add('open');};
 $('#setCancel').onclick=()=>$('#setModal').classList.remove('open');
 $('#setSave').onclick=async()=>{cfg={owner:$('#sOwner').value.trim(),repo:$('#sRepo').value.trim(),token:$('#sToken').value.trim()};store.set(LS+'.cfg',cfg);$('#setModal').classList.remove('open');
-  if(!cfg.token)return setSync('local');
+  applyRole();if(!cfg.token)return setSync('local');
   if(store.get(LS+'.dirty',false))syncUp();
   else{try{places=(await ghGet()).data;places.forEach(normalize);store.set(LS+'.places',places);setSync('ok');renderAll();buildTour();renderClosest();heroCopy();toast('Connected to GitHub ✓');}catch(e){setSync('err');toast('Couldn’t reach repo — check details');}}
 };
 $('#exportBtn').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(places,null,1)],{type:'application/json'}));a.download='places.json';a.click();};
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'))});
+// ---------- Suggestions (visitors suggest, Bern approves) ----------
+const OWNER_EMAIL='brittobernardo3011@gmail.com';
+const isOwner=()=>!!cfg.token;
+function applyRole(){document.body.classList.toggle('owner',isOwner());const b=$('#addBtn');b.title=isOwner()?'Add place':'Suggest a spot';b.setAttribute('aria-label',b.title);}
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/^the\s+/,'').replace(/[^a-z0-9]/g,'');
+let gCat='Restaurant';
+function drawG(){$('#gCat').innerHTML=Object.entries(CATS).map(([k,v])=>'<button type="button" class="'+(gCat===k?'on':'')+'" style="--c:var(--'+k+')" data-k="'+k+'">'+v.e+' '+v.label+'</button>').join('')}
+function openSuggest(){gCat='Restaurant';['gName','gHood','gWho','gWhy'].forEach(i=>$('#'+i).value='');$('#gMsg').textContent='';drawG();$('#sugModal').classList.add('open');setTimeout(()=>$('#gName').focus(),50)}
+$('#gCat').onclick=e=>{const b=e.target.closest('button');if(b){gCat=b.dataset.k;drawG()}};
+$('#gName').oninput=()=>{const n=norm($('#gName').value);const hit=n.length>2&&places.find(p=>norm(p.name)===n||(n.length>4&&norm(p.name).includes(n)));$('#gMsg').textContent=hit?('Already on the map: '+hit.name+' ('+hit.hood+')'):''};
+$('#gCancel').onclick=()=>$('#sugModal').classList.remove('open');
+$('#gSend').onclick=()=>{
+  const name=$('#gName').value.trim();if(!name)return toast('Add the place name');
+  const hit=places.find(p=>norm(p.name)===norm(name));if(hit)return toast(hit.name+' is already on the map');
+  const data={name,cat:gCat,hood:$('#gHood').value.trim(),note:$('#gWhy').value.trim(),by:$('#gWho').value.trim()};
+  const link=location.origin+location.pathname+'#add='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))));
+  const fd=new FormData();
+  Object.entries({_subject:"Bern's List suggestion: "+name,_template:'table',_captcha:'false',Place:name,Type:CATS[gCat].label,Neighborhood:data.hood||'-',Why:data.note||'-',From:data.by||'-','Approve (tap to add)':link}).forEach(([k,v])=>fd.append(k,v));
+  $('#gSend').disabled=true;
+  fetch('https://formsubmit.co/ajax/'+OWNER_EMAIL,{method:'POST',mode:'no-cors',body:fd})
+    .then(()=>{$('#sugModal').classList.remove('open');toast('Thanks! Bern will review it 🌴')})
+    .catch(()=>toast('Couldn’t send — try again in a bit'))
+    .finally(()=>{$('#gSend').disabled=false});
+};
+function checkAddLink(){
+  const m=location.hash.match(/^#add=(.+)$/);if(!m)return;let d;
+  try{d=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))))}catch(e){return}
+  history.replaceState(null,'',location.pathname);
+  if(!isOwner())return toast('Only Bern can approve suggestions');
+  const hit=places.find(p=>norm(p.name)===norm(d.name));if(hit){toast(d.name+' is already on your map');goTo(hit.id);return}
+  openEdit(null);$('#editTitle').textContent='Approve suggestion';
+  $('#fName').value=d.name||'';$('#fHood').value=d.hood||'';$('#fNote').value=(d.note||'')+(d.by?' (suggested by '+d.by+')':'');
+  if(CATS[d.cat]){fCats=new Set([d.cat]);drawSeg()}
+  $('#fWant').checked=true;$('#fAddr').value=(d.name+' '+(d.hood||'')+' Miami').trim();geocode();
+}
+addEventListener('hashchange',()=>{if(/^#add=/.test(location.hash))checkAddLink()});
+
 // ---------- Map feel ----------
 function setFull(on){$('#mapapp').classList.toggle('full',on);document.body.classList.toggle('mapfull',on);if(on){map.scrollWheelZoom.enable();$('#wheelhint').style.opacity=0}else map.scrollWheelZoom.disable();$('#fullBtn').textContent=on?'✕':'⛶';setTimeout(()=>map.invalidateSize(),80);}
 $('#mapCover').onclick=()=>setFull(true);$('#mapClose').onclick=()=>setFull(false);$('#fullBtn').onclick=()=>setFull(!$('#mapapp').classList.contains('full'));
