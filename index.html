@@ -285,6 +285,13 @@ footer{padding-block:48px calc(36px + env(safe-area-inset-bottom,0px));border-to
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:end}
 footer .big{font-family:var(--f-display);font-size:clamp(48px,10vw,130px);line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(255,127,176,.45)}
 
+/* Limelight runs wide: keep display type inside its column */
+.chapters .h2{font-size:clamp(38px,4.4vw,68px)}
+.ch h3{font-size:clamp(40px,4.8vw,78px);overflow-wrap:break-word}
+.title{font-size:clamp(52px,10.5vw,190px)}
+.line2,.line3{font-size:clamp(38px,6.4vw,100px)}
+.h2{font-size:clamp(38px,5.6vw,84px)}
+.deco{max-width:100%}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .band div{animation:none}
