@@ -87,6 +87,7 @@ h1{margin:0;font-size:30px;letter-spacing:-.5px;font-weight:700;background:var(-
 .btn:hover{background:rgba(255,255,255,.13)}
 .btn.pri{background:var(--grad);color:#0a0e1f!important;border:none;font-weight:700}
 .btn.danger{color:#ff7aa8!important}
+.darktiles{filter:invert(1) hue-rotate(195deg) brightness(.92) contrast(.92) saturate(.7)}
 .leaflet-control-attribution{background:rgba(10,14,31,.7)!important;color:#667!important;font-size:10px}
 .leaflet-control-attribution a{color:#889!important}
 .leaflet-control-zoom a{background:var(--panel)!important;color:var(--text)!important;border-color:var(--line)!important}
@@ -245,7 +246,7 @@ if(!cfg.owner && location.hostname.endsWith('github.io')){cfg.owner=location.hos
 
 const map=L.map('map',{zoomControl:false,attributionControl:true}).setView([25.80,-80.19],12);
 L.control.zoom({position:'topright'}).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:20,subdomains:'abcd',attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors',className:'darktiles'}).addTo(map);
 
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2400)}
 function dist(a,b){const R=3958.8,r=x=>x*Math.PI/180;const dLat=r(b.lat-a.lat),dLng=r(b.lng-a.lng);const h=Math.sin(dLat/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(h))}

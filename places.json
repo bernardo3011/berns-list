@@ -35,7 +35,7 @@
   "lat": 25.725232,
   "lng": -80.245059,
   "status": "ok",
-  "note": "You wrote 'Serenea' — matched Sereia (3540 Main Hwy)",
+  "note": "",
   "rating": 0,
   "fav": false,
   "addr": "3540 Main Hwy, Coconut Grove"
@@ -63,7 +63,7 @@
   "lat": 25.956915,
   "lng": -80.144402,
   "status": "ok",
-  "note": "Only Miami-area Eataly is at Aventura Mall — fix if you meant another",
+  "note": "",
   "rating": 0,
   "fav": false
  },
@@ -272,7 +272,7 @@
   "lat": 25.949462,
   "lng": -80.145713,
   "status": "ok",
-  "note": "Aventura location",
+  "note": "",
   "rating": 0,
   "fav": false,
   "addr": "Aventura"
@@ -384,7 +384,7 @@
   "lat": 25.768525,
   "lng": -80.214768,
   "status": "ok",
-  "note": "Closest match for “La Casetta” — fix if wrong",
+  "note": "",
   "rating": 0,
   "fav": false,
   "addr": "502 SW 12th Ave"
@@ -649,7 +649,7 @@
   "lat": 25.849985,
   "lng": -80.192645,
   "status": "ok",
-  "note": "Closest match for “mezcaleria” — fix if wrong",
+  "note": "",
   "rating": 0,
   "fav": false,
   "addr": "205 NE 82nd St"
