@@ -872,5 +872,629 @@
   "lat": 25.743776,
   "lng": -80.174274,
   "status": "ok"
+ },
+ {
+  "id": "sunny-s",
+  "name": "Sunny's",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Steakhouse",
+  "hood": "Little River",
+  "lat": 25.846,
+  "lng": -80.186,
+  "status": "approx",
+  "note": "Special-occasion steak; reservations open 30 days out",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "fooq-s",
+  "name": "Fooq's",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Persian",
+  "hood": "Little River",
+  "lat": 25.848705,
+  "lng": -80.192947,
+  "status": "approx",
+  "note": "Big-night dinner, then drinks and dancing",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "bar-bucce",
+  "name": "Bar Bucce",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Pizza",
+  "hood": "Little River",
+  "lat": 25.842015,
+  "lng": -80.189658,
+  "status": "approx",
+  "note": "Reggae Sundays on the patio",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "double-luck",
+  "name": "Double Luck",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Chinese",
+  "hood": "Upper Eastside",
+  "lat": 25.841168,
+  "lng": -80.181558,
+  "status": "approx",
+  "note": "Mirrored room, crab rangoon, Cantopop",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "jass-kitchen",
+  "name": "Jass Kitchen",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Mediterranean",
+  "hood": "Buena Vista",
+  "lat": 25.816318,
+  "lng": -80.194941,
+  "status": "approx",
+  "note": "Live jazz around 8:30",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "palma",
+  "name": "Palma",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Tasting menu",
+  "hood": "Little Havana",
+  "lat": 25.763837,
+  "lng": -80.215635,
+  "status": "approx",
+  "note": "Candlelit counter, seasonal tasting menu",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "to-be-determined",
+  "name": "To Be Determined",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "American",
+  "hood": "Coral Way",
+  "lat": 25.753868,
+  "lng": -80.246018,
+  "status": "approx",
+  "note": "Eight-dish menu that keeps changing",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "barra-callao",
+  "name": "Barra Callao",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Peruvian",
+  "hood": "North Miami Beach",
+  "lat": 25.929462,
+  "lng": -80.163866,
+  "status": "approx",
+  "note": "Casual counter, great ceviche",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "cafe-la-trova",
+  "name": "Cafe La Trova",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Cuban",
+  "hood": "Little Havana",
+  "lat": 25.766183,
+  "lng": -80.210473,
+  "status": "ok",
+  "note": "Live music and daiquiris",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "boteco",
+  "name": "Boteco",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Brazilian",
+  "hood": "Upper Eastside",
+  "lat": 25.847905,
+  "lng": -80.177674,
+  "status": "ok",
+  "note": "Weekend live band, patio dance floor",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "le-bouchon-du-grove",
+  "name": "Le Bouchon du Grove",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "French",
+  "hood": "Coconut Grove",
+  "lat": 25.724362,
+  "lng": -80.239338,
+  "status": "approx",
+  "note": "Lively French bistro",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "el-carajo",
+  "name": "El Carajo",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Spanish tapas",
+  "hood": "Coconut Grove",
+  "lat": 25.746757,
+  "lng": -80.22153,
+  "status": "ok",
+  "note": "Tapas and wine inside a gas station",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "krus-kitchen",
+  "name": "Krüs Kitchen",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Natural wine",
+  "hood": "Coconut Grove",
+  "lat": 25.726032,
+  "lng": -80.244482,
+  "status": "approx",
+  "note": "Small plates and natural wine",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "the-joyce",
+  "name": "The Joyce",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Steakhouse",
+  "hood": "South Beach",
+  "lat": 25.781095,
+  "lng": -80.130104,
+  "status": "approx",
+  "note": "Tiny splurge steakhouse",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "ted-s-burgers",
+  "name": "Ted's Burgers",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Burgers",
+  "hood": "Wynwood",
+  "lat": 25.804301,
+  "lng": -80.201259,
+  "status": "approx",
+  "note": "Cult pop-up, now a real shop",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "tin-tin",
+  "name": "Tín Tín",
+  "cats": [
+   "Restaurant"
+  ],
+  "tag": "Cuban-French-Italian",
+  "hood": "Little Havana",
+  "lat": 25.7654,
+  "lng": -80.237564,
+  "status": "ok",
+  "note": "Opened Dec 2025",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "zeyzey",
+  "name": "ZeyZey",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Live music",
+  "hood": "Little River",
+  "lat": 25.832808,
+  "lng": -80.189092,
+  "status": "ok",
+  "note": "Live cumbia and DJs, tacos out front",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "kaiju",
+  "name": "Kaiju",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Cocktails",
+  "hood": "Little River",
+  "lat": 25.851939,
+  "lng": -80.193241,
+  "status": "ok",
+  "note": "Anime-themed cocktails inside The Citadel",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "dante-s-hifi",
+  "name": "Dante's HiFi",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Listening bar",
+  "hood": "Wynwood",
+  "lat": 25.798133,
+  "lng": -80.196211,
+  "status": "approx",
+  "note": "Serious sound system, great records",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "panamericano",
+  "name": "Panamericano",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Cocktails",
+  "hood": "Brickell",
+  "lat": 25.764998,
+  "lng": -80.193117,
+  "status": "approx",
+  "note": "Hidden, theatrical cocktails; reserve",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "sunkissed",
+  "name": "Sunkissed",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Seafood lounge",
+  "hood": "Brickell",
+  "lat": 25.757975,
+  "lng": -80.195618,
+  "status": "approx",
+  "note": "Dinner, live band and dancing",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "la-poubelle",
+  "name": "La Poubelle",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Piano bar",
+  "hood": "North Beach",
+  "lat": 25.866459,
+  "lng": -80.117026,
+  "status": "approx",
+  "note": "Cabaret dinner shows",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "over-under",
+  "name": "Over Under",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Bar food",
+  "hood": "Downtown",
+  "lat": 25.777349,
+  "lng": -80.194238,
+  "status": "approx",
+  "note": "Loud bar, Florida-style bar food",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "mac-s-club-deuce",
+  "name": "Mac's Club Deuce",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Dive bar",
+  "hood": "South Beach",
+  "lat": 25.785291,
+  "lng": -80.131474,
+  "status": "ok",
+  "note": "Classic cash-only dive",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "brother-s-keeper",
+  "name": "Brother's Keeper",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Cocktails",
+  "hood": "South Beach",
+  "lat": 25.785427,
+  "lng": -80.131937,
+  "status": "approx",
+  "note": "'80s rock and neon",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "mae-s-room",
+  "name": "Mae's Room",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Cocktails",
+  "hood": "Coconut Grove",
+  "lat": 25.72687,
+  "lng": -80.244837,
+  "status": "approx",
+  "note": "Small cocktail room, $9 happy hour",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "no-seasons",
+  "name": "No Seasons",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Brewery",
+  "hood": "Little River",
+  "lat": 25.844238,
+  "lng": -80.186409,
+  "status": "approx",
+  "note": "Brewery with a top Cuban sandwich",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "the-cleat",
+  "name": "The Cleat",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Waterfront",
+  "hood": "Key Biscayne",
+  "lat": 25.670726,
+  "lng": -80.158455,
+  "status": "approx",
+  "note": "Best bay-view bar, in Bill Baggs park",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "sipsip",
+  "name": "Sipsip",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Rooftop",
+  "hood": "Coconut Grove",
+  "lat": 25.728677,
+  "lng": -80.241015,
+  "status": "ok",
+  "note": "Rooftop with a slice of the bay",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "level-6-by-amal",
+  "name": "Level 6 by Amal",
+  "cats": [
+   "Bar"
+  ],
+  "tag": "Rooftop",
+  "hood": "Coconut Grove",
+  "lat": 25.729769,
+  "lng": -80.237412,
+  "status": "approx",
+  "note": "Bay-view sunset rooftop",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "the-citadel",
+  "name": "The Citadel",
+  "cats": [
+   "Spot"
+  ],
+  "tag": "Food hall rooftop",
+  "hood": "Little River",
+  "lat": 25.851939,
+  "lng": -80.193241,
+  "status": "ok",
+  "note": "Food hall with a sunset rooftop",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "motek",
+  "name": "Motek",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Café",
+  "hood": "Coral Gables",
+  "lat": 25.745577,
+  "lng": -80.260931,
+  "status": "approx",
+  "note": "Highly rated café with full menu",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "cafe-bastille",
+  "name": "Café Bastille",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Bakery café",
+  "hood": "South Beach",
+  "lat": 25.775314,
+  "lng": -80.134171,
+  "status": "ok",
+  "note": "Bakery café, quick service",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "el-sitio-coffee-bar",
+  "name": "El Sitio Coffee Bar",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Cuban coffee",
+  "hood": "Downtown",
+  "lat": 25.772645,
+  "lng": -80.194234,
+  "status": "approx",
+  "note": "Hole-in-the-wall Cuban breakfast",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "macondo-coffee-roasters",
+  "name": "Macondo Coffee Roasters",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Colombian roaster",
+  "hood": "Little Havana",
+  "lat": 25.765072,
+  "lng": -80.228399,
+  "status": "ok",
+  "note": "Cozy Colombian-style roaster",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "naughty-coffee",
+  "name": "Naughty Coffee",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Roaster",
+  "hood": "Downtown",
+  "lat": 25.775337,
+  "lng": -80.190176,
+  "status": "ok",
+  "note": "Popular lattes",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "lemoni-cafe",
+  "name": "Lemoni Cafe",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Café",
+  "hood": "Design District",
+  "lat": 25.809002,
+  "lng": -80.19311,
+  "status": "approx",
+  "note": "Homey café, good food",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "vice-city-bean",
+  "name": "Vice City Bean",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Specialty coffee",
+  "hood": "Wynwood",
+  "lat": 25.791536,
+  "lng": -80.194118,
+  "status": "ok",
+  "note": "Good beans, house vanilla",
+  "rating": 0,
+  "fav": false,
+  "want": true
+ },
+ {
+  "id": "fiore-caffe",
+  "name": "Fiore Caffe",
+  "cats": [
+   "Coffee"
+  ],
+  "tag": "Café",
+  "hood": "Downtown",
+  "lat": 25.774767,
+  "lng": -80.194993,
+  "status": "approx",
+  "note": "Small menu, delicious food",
+  "rating": 0,
+  "fav": false,
+  "want": true
  }
 ]
